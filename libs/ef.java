@@ -33,10 +33,10 @@ local function animate_functions(speed: number)
 		return
 	end
 	
-	ui.background.sections_background[ui.current_section].UIListLayout.Padding = UDim.new(1, 0)
+	ui.background.sections_background[ui.current_section].UIGridLayout.CellPadding = UDim2.new(0, 7, 0, -100)
 
-	TweenService:Create(ui.background.sections_background[ui.current_section].UIListLayout, TweenInfo.new(speed, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
-		Padding = UDim.new(0.0149999997, 0)
+	TweenService:Create(ui.background.sections_background[ui.current_section].UIGridLayout, TweenInfo.new(speed, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+		CellPadding = UDim2.new(0, 7, 0, 7)
 	}):Play()
 end
 
@@ -78,6 +78,7 @@ task.delay(0.1, function()
 
 		if ui.is_open then
 			TweenService:Create(ui.background.UIScale, TweenInfo.new(1, Enum.EasingStyle.Exponential), {
+				
 				Scale = 0
 			}):Play()
 		else
@@ -192,6 +193,7 @@ function ui.create_section(data)
 	
 	local example = Instance.new("ScrollingFrame")
 	local UIListLayout = Instance.new("UIListLayout")
+	local UIGridLayout = Instance.new("UIGridLayout")
 
 	example.Name = data.name
 	example.Parent = ui.background.sections_background
@@ -207,11 +209,19 @@ function ui.create_section(data)
 	example.ScrollBarThickness = 0
 	example.Visible = false
 
+	UIGridLayout.Parent = example
+	UIGridLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+	UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	UIGridLayout.CellPadding = UDim2.new(0, 7, 0, 7)
+	UIGridLayout.CellSize = UDim2.new(0, 235, 0, 65)
+
+	--[[
 	UIListLayout.Parent = example
 	UIListLayout.Wraps = true
 	UIListLayout.FillDirection = Enum.FillDirection.Horizontal
 	UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 	UIListLayout.Padding = UDim.new(0.0149999997, 0)
+	]]
 	
 	section.MouseEnter:Connect(function()
 		TweenService:Create(section, TweenInfo.new(0.35, Enum.EasingStyle.Exponential), {
