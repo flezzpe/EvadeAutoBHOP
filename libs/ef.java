@@ -208,6 +208,7 @@ function ui.create_section(data)
 	example.Visible = false
 
 	UIListLayout.Parent = example
+	UIListLayout.Wraps = true
 	UIListLayout.FillDirection = Enum.FillDirection.Horizontal
 	UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 	UIListLayout.Padding = UDim.new(0.0149999997, 0)
