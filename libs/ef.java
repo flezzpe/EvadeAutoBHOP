@@ -43,7 +43,7 @@ end
 ui.init_folders()
 
 function ui:save_config()
-	local config = HttpService:JSONEncode(self.config)
+	local config = ui.config
     
 	writefile('Nury/script/configs/default', config)
 end
@@ -61,9 +61,7 @@ function ui:load_config()
 		return
 	end
 	
-	self.config = HttpService:JSONDecode(config_file)
-
-	for key, value in self.config do
+	for key, value in config_file do
 		if value then
 			print(key)
 		end
@@ -133,7 +131,7 @@ end
 
 ContextActionService:BindAction('Gui', ui_open_close, true, Enum.KeyCode.RightShift)
 
-task.delay(0.35, function()
+task.delay(0.1, function()
 	RunService:BindToRenderStep('render', 1, function()
 		ui.get_screen_scale()
 
