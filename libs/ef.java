@@ -2,10 +2,6 @@ repeat
     task.wait()
 until game:IsLoaded()
 
-if not isfolder('nury') then
-	makefolder('nury')
-end
-
 local ui = {
 	background = Instance.new("Frame"),
 	current_section = nil,
@@ -13,9 +9,7 @@ local ui = {
 	UI_scale = 0,
 }
 
-ui.config = {
-    ['auto parry'] = true
-}
+ui.config = {}
 
 local mouse = game:GetService('Players').LocalPlayer:GetMouse()
 local lastMouseX = mouse.X
@@ -25,21 +19,42 @@ local TweenService = game:GetService('TweenService')
 local HttpService = game:GetService('HttpService')
 local RunService = game:GetService('RunService')
 
+if not isfolder('Nury') then
+	makefolder('Nury')
+end
+
+function ui.init_folders()
+    local script_folder = isfolder('Nury/script')
+    local data_folder = isfolder('Nury/%user_cache%')
+
+	if not script_folder then
+        makefolder('Nury/script')
+	end
+
+    if not data_folder then
+        makefolder('Nury/user_cache')
+    end
+    
+    return
+end
+
+ui.init_folders()
+
 function ui.save_cofnig()
-	writefile('nury/config.ini',  HttpService:JSONEncode(ui.config))
+	writefile('Nury/script/configs/default.json', ui.config)
 end
 
 function ui.load_config()
-	if not isfile('nury/config.ini') then
-		ui.save_flags()
+	if not isfile('Nury/script/configs/default.json') then
+		ui.save_cofnig()
 
 		return
 	end
 
-	local config_file = readfile('nury/config.ini')
+	local config_file = readfile('Nury/script/configs/default.json')
 
 	if not config_file then
-		ui.save_flags()
+		ui.save_cofnig()
 
 		return
 	end
@@ -48,7 +63,7 @@ function ui.load_config()
 end
 
 
-ui.load_flags()
+ui.load_config()
 
 function get_mouse_direction()
 	task.delay(0.01, function()
