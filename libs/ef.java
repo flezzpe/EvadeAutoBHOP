@@ -2,6 +2,10 @@ repeat
     task.wait()
 until game:IsLoaded()
 
+if not isfolder('nury') then
+	makefolder('nury')
+end
+
 local ui = {
 	background = Instance.new("Frame"),
 	current_section = nil,
@@ -9,7 +13,7 @@ local ui = {
 	UI_scale = 0,
 }
 
-ui.flags = {
+ui.config = {
     ['auto parry'] = true
 }
 
@@ -21,35 +25,26 @@ local TweenService = game:GetService('TweenService')
 local HttpService = game:GetService('HttpService')
 local RunService = game:GetService('RunService')
 
-if not isfolder('nury') then
-	makefolder('nury')
+function ui.save_cofnig()
+	writefile('nury/config.ini',  HttpService:JSONEncode(ui.config))
 end
 
-function ui.save_flags()
-	if not ui.background then
-		return
-	end
-
-	local flags = HttpService:JSONEncode(ui.flags)
-	writefile('nury/config.ini', flags)
-end
-
-function ui.load_flags()
+function ui.load_config()
 	if not isfile('nury/config.ini') then
 		ui.save_flags()
 
 		return
 	end
 
-	local flags = readfile('nury/config.ini')
+	local config_file = readfile('nury/config.ini')
 
-	if not flags then
+	if not config_file then
 		ui.save_flags()
 
 		return
 	end
 	
-	ui.flags = HttpService:JSONDecode(flags)
+	ui.config = HttpService:JSONDecode(config_file)
 end
 
 
