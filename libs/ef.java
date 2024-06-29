@@ -25,7 +25,7 @@ end
 
 function ui.init_folders()
     local script_folder = isfolder('Nury/script')
-    local data_folder = isfolder('Nury/%user_cache%')
+    local data_folder = isfolder('Nury/lua')
 
 	if not script_folder then
         makefolder('Nury/script')
@@ -41,11 +41,11 @@ end
 ui.init_folders()
 
 function ui.save_cofnig()
-	writefile('Nury/script/configs/default.json', ui.config)
+	writefile('Nury/script/configs/default', 'test')
 end
 
 function ui.load_config()
-	if not isfile('Nury/script/configs/default.json') then
+	if not isfile('Nury/script/configs/default') then
 		ui.save_cofnig()
 
 		return
@@ -59,7 +59,7 @@ function ui.load_config()
 		return
 	end
 	
-	ui.config = HttpService:JSONDecode(config_file)
+	ui.config = 'test'
 end
 
 
