@@ -25,14 +25,14 @@ end
 
 function ui.init_folders()
     local script_folder = isfolder('Nury/script')
-    local data_folder = isfolder('Nury/lua')
+    local data_folder = isfolder('Nury/DO-NOT-SHARE')
 
 	if not script_folder then
         makefolder('Nury/script')
 	end
 
     if not data_folder then
-        makefolder('Nury/user_cache')
+        makefolder('Nury/DO-NOT-SHARE')
     end
     
     return
