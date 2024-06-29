@@ -42,22 +42,23 @@ end
 
 ui.init_folders()
 
-function ui:save_config()
+function ui.save_config()
 	local config = ui.config
     
 	writefile('Nury/script/configs/default', config)
 end
 
-function ui:load_config()
+function ui.load_config()
 	if not isfile('Nury/script/configs/default') then
-		self:save_config()
+		ui.save_config()
+
 		return
 	end
 
 	local config_file = readfile('Nury/script/configs/default')
 
 	if not config_file then
-		self:save_config()
+		ui.save_config()
 		return
 	end
 	
