@@ -51,7 +51,7 @@ function ui.load_config()
 		return
 	end
 
-	local config_file = readfile('Nury/script/configs/default.json')
+	local config_file = readfile('Nury/script/configs/default')
 
 	if not config_file then
 		ui.save_cofnig()
@@ -398,7 +398,7 @@ function ui.create_function(data, callback)
 		toggled = not toggled
 		callback(toggled)
 
-        ui.save_flags()
+        ui.save_cofnig()
 		
 		if toggled then
 			task.delay(0.15, function()
