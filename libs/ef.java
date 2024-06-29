@@ -1,3 +1,7 @@
+repeat
+    task.wait()
+until game:IsLoaded()
+
 local ui = {
 	background = Instance.new("Frame"),
 	current_section = nil,
@@ -5,16 +9,55 @@ local ui = {
 	UI_scale = 0,
 }
 
+ui.flags = {
+    ['auto parry'] = true
+}
+
 local mouse = game:GetService('Players').LocalPlayer:GetMouse()
-local lastMouseX, lastMouseY = mouse.X, mouse.Y
+local lastMouseX = mouse.X
 
 local ContextActionService = game:GetService('ContextActionService')
 local TweenService = game:GetService('TweenService')
+local HttpService = game:GetService('HttpService')
 local RunService = game:GetService('RunService')
+
+if not isfolder('nury') then
+	makefolder('nury')
+end
+
+function ui.save_flags()
+	if not ui.background then
+		return
+	end
+
+	local flags = HttpService:JSONEncode(ui.flags)
+	writefile('nury/config.ini', flags)
+end
+
+function ui.load_flags()
+	if not isfile('nury/config.ini') then
+		ui.save_flags()
+
+		return
+	end
+
+	local flags = readfile('nury/config.ini')
+
+	if not flags then
+		ui.save_flags()
+
+		return
+	end
+	
+	ui.flags = HttpService:JSONDecode(flags)
+end
+
+
+ui.load_flags()
 
 function get_mouse_direction()
 	task.delay(0.01, function()
-		lastMouseX, lastMouseY = mouse.X, mouse.Y
+		lastMouseX = mouse.X
 	end)
 	
 	return mouse.X - lastMouseX
@@ -344,6 +387,8 @@ function ui.create_function(data, callback)
 	text.MouseButton1Up:Connect(function()
 		toggled = not toggled
 		callback(toggled)
+
+        ui.save_flags()
 		
 		if toggled then
 			task.delay(0.15, function()
