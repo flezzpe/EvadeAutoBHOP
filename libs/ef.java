@@ -7,9 +7,8 @@ local ui = {
 	current_section = nil,
 	is_open = false,
 	UI_scale = 0,
+	config = {}
 }
-
-ui.config = {}
 
 local mouse = game:GetService('Players').LocalPlayer:GetMouse()
 local lastMouseX = mouse.X
@@ -26,47 +25,48 @@ end
 function ui.init_folders()
     local script_folder = isfolder('Nury/script')
     local data_folder = isfolder('Nury/DO-NOT-SHARE')
-    
-    local config_folder = isfolder('Nury/script/config')
+    local config_folder = isfolder('Nury/script/configs')
 
 	if not script_folder then
         makefolder('Nury/script')
 	end
 
     if not config_folder then
-        makefolder('Nury/script/config')
+        makefolder('Nury/script/configs')
 	end
-
 
     if not data_folder then
         makefolder('Nury/DO-NOT-SHARE')
     end
-    
-    return
 end
 
 ui.init_folders()
 
-function ui.save_cofnig()
-	writefile('Nury/script/configs/default', 'test')
+function ui:save_config()
+	local flags = HttpService:JSONEncode(self.config)
+	writefile('Nury/script/configs/default', flags)
 end
 
-function ui.load_config()
+function ui:load_config()
 	if not isfile('Nury/script/configs/default') then
-		ui.save_cofnig()
-
+		self:save_config()
 		return
 	end
 
 	local config_file = readfile('Nury/script/configs/default')
 
 	if not config_file then
-		ui.save_cofnig()
-
+		self:save_config()
 		return
 	end
 	
-	ui.config = 'test'
+	self.config = HttpService:JSONDecode(config_file)
+
+	for key, value in self.config do
+		if value then
+			print(key)
+		end
+	end
 end
 
 
@@ -408,6 +408,9 @@ function ui.create_function(data, callback)
         ui.save_cofnig()
 		
 		if toggled then
+            table.insert(ui.config, data.name)
+            print(ui.config)
+
 			task.delay(0.15, function()
 				toggle.Image = "rbxassetid://18229027207"
 			end)
@@ -422,6 +425,16 @@ function ui.create_function(data, callback)
 				}):Play()
 			end)
 		else
+            for index, element in ui.config do
+                print(element)
+
+                if element == data.name then
+                    warn(element)
+
+                    table.remove(ui.config, index)
+                end
+            end
+
 			task.delay(0.15, function()
 				toggle.Image = "rbxassetid://18228140457"
 			end)
