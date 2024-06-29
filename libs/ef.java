@@ -133,7 +133,7 @@ end
 
 ContextActionService:BindAction('Gui', ui_open_close, true, Enum.KeyCode.RightShift)
 
-task.delay(0.1, function()
+task.delay(0.35, function()
 	RunService:BindToRenderStep('render', 1, function()
 		ui.get_screen_scale()
 
