@@ -5,6 +5,7 @@ until game:IsLoaded()
 local ui = {
 	background = Instance.new("Frame"),
 	current_section = nil,
+    is_loaded = false,
 	is_open = false,
 	UI_scale = 0,
 	config = {}
@@ -43,30 +44,27 @@ end
 ui.init_folders()
 
 function ui.save_config()
-	local config = ui.config
-    
-	writefile('Nury/script/configs/default', config)
+    if not ui.is_loaded then
+        return
+    end
+
+	local config = HttpService:JSONEncode(ui.config)
+
+	writefile('Nury/script/configs/default.txt', config)
 end
 
 function ui.load_config()
-	if not isfile('Nury/script/configs/default') then
+	if not isfile('Nury/script/configs/default.txt') then
+        warn('FILE IS NULL')
+
 		ui.save_config()
 
 		return
 	end
 
-	local config_file = readfile('Nury/script/configs/default')
+	local config_file = readfile('Nury/script/configs/default.txt')
 
-	if not config_file then
-		ui.save_config()
-		return
-	end
-	
-	for key, value in config_file do
-		if value then
-			print(key)
-		end
-	end
+	ui.config = HttpService:JSONDecode(config_file)
 end
 
 
@@ -132,7 +130,7 @@ end
 
 ContextActionService:BindAction('Gui', ui_open_close, true, Enum.KeyCode.RightShift)
 
-task.delay(0.1, function()
+task.delay(0.2, function()
 	RunService:BindToRenderStep('render', 1, function()
 		ui.get_screen_scale()
 
@@ -150,6 +148,8 @@ task.delay(0.1, function()
 end)
 
 function ui:init()
+    ui.is_loaded = true
+
 	local gui = Instance.new("ScreenGui")
 	local UICorner = Instance.new("UICorner")
 	local sections = Instance.new("ScrollingFrame")
@@ -326,7 +326,6 @@ function ui.create_function(data, callback)
 	callback = callback or function() end
 
 	local toggled = false
-	local keybind = nil
 	
 	local Example = Instance.new("Frame")
 	local UICorner = Instance.new("UICorner")
@@ -401,15 +400,27 @@ function ui.create_function(data, callback)
 	title.TextWrapped = true
 	title.TextXAlignment = Enum.TextXAlignment.Left
 
+    for __index, element in ui.config do
+        if element == data.name then
+            toggled = true
+		    callback(toggled)
+
+            task.delay(0.15, function()
+				toggle.Image = "rbxassetid://18229027207"
+			end)
+
+            TweenService:Create(toggle, TweenInfo.new(1.2, Enum.EasingStyle.Exponential), {
+                ImageTransparency = 0.35
+            }):Play()
+        end
+    end
+
 	text.MouseButton1Up:Connect(function()
 		toggled = not toggled
 		callback(toggled)
-
-        ui.save_cofnig()
 		
 		if toggled then
             table.insert(ui.config, data.name)
-            print(ui.config)
 
 			task.delay(0.15, function()
 				toggle.Image = "rbxassetid://18229027207"
@@ -426,11 +437,7 @@ function ui.create_function(data, callback)
 			end)
 		else
             for index, element in ui.config do
-                print(element)
-
                 if element == data.name then
-                    warn(element)
-
                     table.remove(ui.config, index)
                 end
             end
@@ -449,6 +456,8 @@ function ui.create_function(data, callback)
 				}):Play()
 			end)
 		end
+
+        ui.save_config()
 	end)
 end
 
