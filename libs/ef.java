@@ -127,6 +127,10 @@ ContextActionService:BindAction('Gui', ui_open_close, true, Enum.KeyCode.RightSh
 
 task.delay(0.2, function()
 	RunService:BindToRenderStep('render', 1, function()
+		if not ui.background:FindFirstChildOfClass('UIScale') then
+			return
+		end
+
 		ui.get_screen_scale()
 
 		if ui.is_open then
