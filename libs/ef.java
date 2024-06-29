@@ -43,8 +43,9 @@ end
 ui.init_folders()
 
 function ui:save_config()
-	local flags = HttpService:JSONEncode(self.config)
-	writefile('Nury/script/configs/default', flags)
+	local config = HttpService:JSONEncode(self.config)
+    
+	writefile('Nury/script/configs/default', config)
 end
 
 function ui:load_config()
