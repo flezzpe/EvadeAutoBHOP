@@ -25,7 +25,6 @@ end
 
 function ui.init_folders()
     local script_folder = isfolder('Nury/script')
-    local data_folder = isfolder('Nury/DO-NOT-SHARE')
     local config_folder = isfolder('Nury/script/configs')
 
 	if not script_folder then
@@ -35,10 +34,6 @@ function ui.init_folders()
     if not config_folder then
         makefolder('Nury/script/configs')
 	end
-
-    if not data_folder then
-        makefolder('Nury/DO-NOT-SHARE')
-    end
 end
 
 ui.init_folders()
