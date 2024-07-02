@@ -6,6 +6,7 @@ local ui = {
 	background = Instance.new("Frame"),
 	current_section = nil,
     is_loaded = false,
+	is_mobile = not game:GetService('UserInputService').KeyboardEnabled,
 	is_open = false,
 	UI_scale = 0,
 	config = {}
@@ -223,17 +224,19 @@ function ui:init()
 	UIScale.Parent = ui.background
 	UIScale.Scale = 10
 	
-	ui.background.MouseEnter:Connect(function()
-		RunService:BindToRenderStep('position_update', 1, function()
-			TweenService:Create(ui.background, TweenInfo.new(2, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {
-				Position = UDim2.new(0.499677122 + (-get_mouse_direction() / 10000), 0, 0.499182284, 0)
-			}):Play()
+	if not ui.is_mobile then
+		ui.background.MouseEnter:Connect(function()
+			RunService:BindToRenderStep('position_update', 1, function()
+				TweenService:Create(ui.background, TweenInfo.new(2, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {
+					Position = UDim2.new(0.499677122 + (-get_mouse_direction() / 10000), 0, 0.499182284, 0)
+				}):Play()
+			end)
 		end)
-	end)
-	
-	ui.background.MouseLeave:Connect(function()
-		RunService:UnbindFromRenderStep('position_update')
-	end)
+		
+		ui.background.MouseLeave:Connect(function()
+			RunService:UnbindFromRenderStep('position_update')
+		end)
+	end
 end
 
 function ui.create_section(data)
@@ -282,16 +285,24 @@ function ui.create_section(data)
 	UIListLayout.Padding = UDim.new(0.0149999997, 0)
 	]]
 	
-	section.MouseEnter:Connect(function()
-		TweenService:Create(section, TweenInfo.new(0.35, Enum.EasingStyle.Exponential), {
-			Size = UDim2.new(0, 35, 0, 35)
-		}):Play()
-	end)
+	if not ui.is_mobile then
+		section.MouseEnter:Connect(function()
+			TweenService:Create(section, TweenInfo.new(0.35, Enum.EasingStyle.Exponential), {
+				Size = UDim2.new(0, 35, 0, 35)
+			}):Play()
+		end)
+		
+		section.MouseLeave:Connect(function()
+			TweenService:Create(section, TweenInfo.new(0.35, Enum.EasingStyle.Exponential), {
+				Size = UDim2.new(0, 30, 0, 30)
+			}):Play()
+		end)	
+	end
 	
-	section.MouseLeave:Connect(function()
-		TweenService:Create(section, TweenInfo.new(0.35, Enum.EasingStyle.Exponential), {
-			Size = UDim2.new(0, 30, 0, 30)
-		}):Play()
+	section.TouchTap:Connect(function()
+		ui.current_section = section.Name
+		
+		animate_functions(1)
 	end)
 	
 	section.MouseButton1Up:Connect(function()
@@ -413,6 +424,51 @@ function ui.create_function(data, callback)
             }):Play()
         end
     end
+
+	text.TouchTap:Connect(function()
+		toggled = not toggled
+		callback(toggled)
+		
+		if toggled then
+            table.insert(ui.config, data.name)
+
+			task.delay(0.15, function()
+				toggle.Image = "rbxassetid://18229027207"
+			end)
+			
+			TweenService:Create(toggle, TweenInfo.new(0.1, Enum.EasingStyle.Exponential), {
+				ImageTransparency = 0.9
+			}):Play()
+
+			task.delay(0.35, function()
+				TweenService:Create(toggle, TweenInfo.new(0.2, Enum.EasingStyle.Exponential), {
+					ImageTransparency = 0.35
+				}):Play()
+			end)
+		else
+            for index, element in ui.config do
+                if element == data.name then
+                    table.remove(ui.config, index)
+                end
+            end
+
+			task.delay(0.15, function()
+				toggle.Image = "rbxassetid://18228140457"
+			end)
+			
+			TweenService:Create(toggle, TweenInfo.new(0.1, Enum.EasingStyle.Exponential), {
+				ImageTransparency = 0.9
+			}):Play()
+			
+			task.delay(0.35, function()
+				TweenService:Create(toggle, TweenInfo.new(0.2, Enum.EasingStyle.Exponential), {
+					ImageTransparency = 0.8
+				}):Play()
+			end)
+		end
+
+        ui.save_config()
+	end)
 
 	text.MouseButton1Up:Connect(function()
 		toggled = not toggled
