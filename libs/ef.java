@@ -136,11 +136,10 @@ task.delay(0.2, function()
 
 		if ui.is_open then
 			TweenService:Create(ui.background.UIScale, TweenInfo.new(1, Enum.EasingStyle.Exponential), {
-				
 				Scale = 0
 			}):Play()
 		else
-			TweenService:Create(ui.background.UIScale, TweenInfo.new(1.25, Enum.EasingStyle.Exponential), {
+			TweenService:Create(ui.background.UIScale, TweenInfo.new(1, Enum.EasingStyle.Exponential), {
 				Scale = ui.UI_scale
 			}):Play()
 		end
@@ -222,13 +221,13 @@ function ui:init()
 	UICorner_3.Parent = sections_background
 
 	UIScale.Parent = ui.background
-	UIScale.Scale = 10
+	UIScale.Scale = 0
 	
 	if not ui.is_mobile then
 		ui.background.MouseEnter:Connect(function()
 			RunService:BindToRenderStep('position_update', 1, function()
-				TweenService:Create(ui.background, TweenInfo.new(2, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {
-					Position = UDim2.new(0.499677122 + (-get_mouse_direction() / 10000), 0, 0.499182284, 0)
+				TweenService:Create(ui.background, TweenInfo.new(1, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {
+					Position = UDim2.new(0.499677122 + (-get_mouse_direction() / 25000), 0, 0.499182284, 0)
 				}):Play()
 			end)
 		end)
