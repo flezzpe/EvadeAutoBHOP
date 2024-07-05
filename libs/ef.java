@@ -2,8 +2,6 @@ repeat
     task.wait()
 until game:IsLoaded()
 
-local library = {}
-
 local ui = {
 	background = Instance.new("Frame"),
 	current_section = nil,
@@ -14,8 +12,6 @@ local ui = {
 	config = {}
 }
 
-library.flags = {}
-
 local mouse = game:GetService('Players').LocalPlayer:GetMouse()
 local lastMouseX = mouse.X
 
@@ -23,7 +19,6 @@ local ContextActionService = game:GetService('ContextActionService')
 local TweenService = game:GetService('TweenService')
 local HttpService = game:GetService('HttpService')
 local RunService = game:GetService('RunService')
-local Debris = game:GetService('Debris')
 
 if not isfolder('Nury') then
 	makefolder('Nury')
@@ -145,7 +140,7 @@ task.delay(0.2, function()
 				Scale = 0
 			}):Play()
 		else
-			TweenService:Create(ui.background.UIScale, TweenInfo.new(1, Enum.EasingStyle.Exponential), {
+			TweenService:Create(ui.background.UIScale, TweenInfo.new(1.25, Enum.EasingStyle.Exponential), {
 				Scale = ui.UI_scale
 			}):Play()
 		end
@@ -153,10 +148,6 @@ task.delay(0.2, function()
 end)
 
 function ui:init()
-    if self:FindFirstChild('gui') then
-        Debris:AddItem(self.gui, 0)
-    end
-
     ui.is_loaded = true
 
 	local gui = Instance.new("ScreenGui")
@@ -231,13 +222,13 @@ function ui:init()
 	UICorner_3.Parent = sections_background
 
 	UIScale.Parent = ui.background
-	UIScale.Scale = 0
+	UIScale.Scale = 10
 	
 	if not ui.is_mobile then
 		ui.background.MouseEnter:Connect(function()
 			RunService:BindToRenderStep('position_update', 1, function()
-				TweenService:Create(ui.background, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-					Position = UDim2.new(0.499677122 + (-get_mouse_direction() / 20000), 0, 0.499182284, 0)
+				TweenService:Create(ui.background, TweenInfo.new(2, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {
+					Position = UDim2.new(0.499677122 + (-get_mouse_direction() / 10000), 0, 0.499182284, 0)
 				}):Play()
 			end)
 		end)
@@ -263,7 +254,7 @@ function ui.create_section(data)
 	section.ImageTransparency = 0.85
 	
 	local example = Instance.new("ScrollingFrame")
-	--//local UIListLayout = Instance.new("UIListLayout")
+	local UIListLayout = Instance.new("UIListLayout")
 	local UIGridLayout = Instance.new("UIGridLayout")
 
 	example.Name = data.name
@@ -333,12 +324,6 @@ function ui.create_section(data)
 			ImageTransparency = (section.Name == ui.current_section and 0 or 0.85)
 		}):Play()
 		
-        if not ui.background:FindFirstChild('sections_background') then
-            table.clear(library.flags)
-
-            return
-        end
-
 		for __index, section in ui.background.sections_background:GetChildren() do
 			if section:IsA('ScrollingFrame') then
 				section.Visible = section.Name == ui.current_section
@@ -347,92 +332,33 @@ function ui.create_section(data)
 	end)
 end
 
-function ui.create_function_holder(data)
-    local SectionContainer = Instance.new("Frame")
-    local Example = Instance.new("Frame")
-    local UICorner = Instance.new("UICorner")
-    local title = Instance.new("TextLabel")
-    local FunctionContainer = Instance.new("Frame")
-    local UIListLayout = Instance.new("UIListLayout")
-    local UIPadding = Instance.new("UIPadding")
+function ui.create_function(data, callback)
+	callback = callback or function() end
 
-    SectionContainer.Name = data.name
-    SectionContainer.Parent = ui.background.sections_background:WaitForChild(data.section)
-    SectionContainer.AnchorPoint = Vector2.new(0.5, 0.5)
-    SectionContainer.BackgroundColor3 = Color3.fromRGB(10, 12, 13)
-    SectionContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    SectionContainer.BorderSizePixel = 0
-    SectionContainer.BackgroundTransparency = 1
-    SectionContainer.Position = UDim2.new(0.256844193, 0, 1, 0)
-    SectionContainer.Size = UDim2.new(0, 0, 0, 35)
-
-    Example.Name = data.name
-    Example.Parent = SectionContainer
-    Example.AnchorPoint = Vector2.new(0.5, 0.5)
-    Example.BackgroundColor3 = Color3.fromRGB(10, 12, 13)
-    Example.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    Example.BorderSizePixel = 0
-    Example.Position = UDim2.new(0.5, 0, 0.5, 0)
-    Example.Size = UDim2.new(0.92, 0, 1, 0)
-
-    UICorner.CornerRadius = UDim.new(0.1, 0)
-    UICorner.Parent = Example
-
-    title.Name = "title"
-    title.Parent = Example
-    title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    title.BackgroundTransparency = 1.0
-    title.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    title.BorderSizePixel = 0
-    title.Position = UDim2.new(0.065, 0, 0.13, 0)
-    title.Size = UDim2.new(0, 200, 0, 14)
-    title.Font = Enum.Font.GothamMedium
-    title.Text = data.name
-    title.TextColor3 = Color3.fromRGB(255, 255, 255)
-    title.TextScaled = true
-    title.TextSize = 14.0
-    title.TextWrapped = true
-    title.TextXAlignment = Enum.TextXAlignment.Left
-
-    FunctionContainer.Name = "FunctionContainer"
-    FunctionContainer.Parent = Example
-    FunctionContainer.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    FunctionContainer.BackgroundTransparency = 1.0
-    FunctionContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    FunctionContainer.BorderSizePixel = 0
-    FunctionContainer.Position = UDim2.new(0, 0, 0, 30) 
-    FunctionContainer.Size = UDim2.new(1, 0, 1, -20)
-
-    UIPadding.Parent = FunctionContainer
-    UIPadding.PaddingTop = UDim.new(0.1, 0)
-
-    UIListLayout.Parent = FunctionContainer
-    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
-    UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Top
-    UIListLayout.Padding = UDim.new(0, 0)
-
-    UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        Example.Size = UDim2.new(Example.Size.X.Scale, Example.Size.X.Offset, 0, UIListLayout.AbsoluteContentSize.Y + 25) -- 25 для высоты заголовка и отступов
-        SectionContainer.Size = UDim2.new(SectionContainer.Size.X.Scale, SectionContainer.Size.X.Offset, 0, Example.Size.Y.Offset + 10) -- 10 для отступов вокруг Example
-        
-        local itemCount = #FunctionContainer:GetChildren() - 1
-        local yPos = 0.5 + (itemCount - 1) * 0.3
-
-        Example.Position = UDim2.new(0.5, 0, yPos, 0)
-    end)
-end
-
-function ui.create_function(data)
-    local toggled = false
+	local toggled = false
 	
+	local Example = Instance.new("Frame")
+	local UICorner = Instance.new("UICorner")
 	local sorter = Instance.new("Frame")
 	local UIListLayout = Instance.new("UIListLayout")
 	local toggle = Instance.new("ImageLabel")
 	local text = Instance.new("TextButton")
-    
+	local title = Instance.new("TextLabel")
+	
+	Example.Name = data.name
+	Example.Parent = ui.background.sections_background:WaitForChild(data.section)
+	Example.AnchorPoint = Vector2.new(0.5, 0.5)
+	Example.BackgroundColor3 = Color3.fromRGB(10, 12, 13)
+	Example.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	Example.BorderSizePixel = 0
+	Example.Position = UDim2.new(0.256844193, 0, 0.0986940488, 0)
+	Example.Size = UDim2.new(0, 230, 0, 60)
+
+	UICorner.CornerRadius = UDim.new(0.100000001, 0)
+	UICorner.Parent = Example
+
 	sorter.Name = "sorter"
-	sorter.Parent = ui.background.sections_background:WaitForChild(data.section):WaitForChild(data.holder_name):WaitForChild(data.holder_name).FunctionContainer
+	sorter.Parent = Example
 	sorter.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 	sorter.BackgroundTransparency = 1.000
 	sorter.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -463,15 +389,31 @@ function ui.create_function(data)
 	text.Position = UDim2.new(1.29999995, 0, 0.129999995, 0)
 	text.Size = UDim2.new(0, 177, 0, 14)
 	text.Font = Enum.Font.Gotham
-	text.Text = data.function_name
+	text.Text = "enabled"
 	text.TextColor3 = Color3.fromRGB(134, 134, 134)
 	text.TextSize = 14.000
 	text.TextXAlignment = Enum.TextXAlignment.Left
 
+	title.Name = "title"
+	title.Parent = Example
+	title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	title.BackgroundTransparency = 1.000
+	title.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	title.BorderSizePixel = 0
+	title.Position = UDim2.new(0.0651782006, 0, 0.131926313, 0)
+	title.Size = UDim2.new(0, 200, 0, 14)
+	title.Font = Enum.Font.GothamMedium
+	title.Text = data.name
+	title.TextColor3 = Color3.fromRGB(255, 255, 255)
+	title.TextScaled = true
+	title.TextSize = 14.000
+	title.TextWrapped = true
+	title.TextXAlignment = Enum.TextXAlignment.Left
+
     for __index, element in ui.config do
-        if element == data.payload then
-			toggled = true
-		    table.insert(library.flags, data.payload)
+        if element == data.name then
+            toggled = true
+		    callback(toggled)
 
             task.delay(0.15, function()
 				toggle.Image = "rbxassetid://18229027207"
@@ -484,20 +426,12 @@ function ui.create_function(data)
     end
 
 	text.TouchTap:Connect(function()
-        toggled = not toggled
-
-        if toggled then
-            table.insert(library.flags, data.payload)
-            table.insert(ui.config, data.payload)
-        else
-            for index, element in library.flags do
-                if element == data.payload then
-                    table.remove(library.flags, index)
-                end
-            end
-        end
+		toggled = not toggled
+		callback(toggled)
 		
 		if toggled then
+            table.insert(ui.config, data.name)
+
 			task.delay(0.15, function()
 				toggle.Image = "rbxassetid://18229027207"
 			end)
@@ -512,6 +446,12 @@ function ui.create_function(data)
 				}):Play()
 			end)
 		else
+            for index, element in ui.config do
+                if element == data.name then
+                    table.remove(ui.config, index)
+                end
+            end
+
 			task.delay(0.15, function()
 				toggle.Image = "rbxassetid://18228140457"
 			end)
@@ -531,26 +471,12 @@ function ui.create_function(data)
 	end)
 
 	text.MouseButton1Up:Connect(function()
-        toggled = not toggled
-
-		 if toggled then
-            table.insert(library.flags, data.payload)
-            table.insert(ui.config, data.payload)
-        else
-            for index, element in library.flags do
-                if element == data.payload then
-                    table.remove(library.flags, index)
-                end
-            end
-
-            for index, element in ui.config do
-                if element == data.payload then
-                    table.remove(ui.config, index)
-                end
-            end
-        end
-
+		toggled = not toggled
+		callback(toggled)
+		
 		if toggled then
+            table.insert(ui.config, data.name)
+
 			task.delay(0.15, function()
 				toggle.Image = "rbxassetid://18229027207"
 			end)
@@ -565,6 +491,12 @@ function ui.create_function(data)
 				}):Play()
 			end)
 		else
+            for index, element in ui.config do
+                if element == data.name then
+                    table.remove(ui.config, index)
+                end
+            end
+
 			task.delay(0.15, function()
 				toggle.Image = "rbxassetid://18228140457"
 			end)
