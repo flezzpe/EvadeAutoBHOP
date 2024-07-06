@@ -266,7 +266,7 @@ function ui.create_section(data)
 	example.Position = UDim2.new(0.0119760484, 0, 0.0336391442, 0)
 	example.Size = UDim2.new(0, 488, 0, 306)
 	example.ScrollBarImageColor3 = Color3.fromRGB(0, 0, 0)
-	example.CanvasSize = UDim2.new(0, 0, 0, 0)
+	example.CanvasSize = UDim2.new(0, 0, 0, 1000)
 	example.ScrollBarThickness = 0
 	example.Visible = false
 
