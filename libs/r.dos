@@ -479,7 +479,7 @@ function UI:create_toggle(callback)
 	UIScale.Scale = 0.800
 	
 	for __index, element in UI.config do
-        if element == self.name then
+        if element == self.ID then
             is_enabled = true
 		    callback(is_enabled)
 
@@ -514,7 +514,7 @@ function UI:create_toggle(callback)
 		callback(is_enabled)
 
 		if is_enabled then
-			table.insert(UI.config, self.name)
+			table.insert(UI.config, self.ID)
 
 			TweenService:Create(UIScale, TweenInfo.new(0.3, Enum.EasingStyle.Exponential), {
 				Scale = 0
@@ -541,7 +541,7 @@ function UI:create_toggle(callback)
 			end)
 		else
 			for index, element in UI.config do
-                if element == self.name then
+                if element == self.ID then
                     table.remove(UI.config, index)
                 end
             end
