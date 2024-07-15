@@ -297,7 +297,7 @@ function UI:create_category()
 	category.TouchTap:Connect(function()
 		animate_functions(0.65)
 
-		UI.currect_category = self.Name
+		UI.currect_category = self.name
 
 		TweenService:Create(UI.background.section_name, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
 			TextTransparency = 1
@@ -315,7 +315,7 @@ function UI:create_category()
 	category.MouseButton1Up:Connect(function()
 		animate_functions(0.65)
 
-		UI.currect_category = self.Name
+		UI.currect_category = self.name
 
 		TweenService:Create(UI.background.section_name, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
 			TextTransparency = 1
