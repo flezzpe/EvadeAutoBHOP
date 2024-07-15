@@ -12,8 +12,55 @@ local UI = {
 	background = Instance.new("Frame"),
 	currect_category = nil,
 	is_open = true,
-	UI_scale = 0
+	UI_scale = 0,
+	config = {}
 }
+
+if not isfolder('Nury') then
+	makefolder('Nury')
+end
+
+function UI.init_folders()
+    local script_folder = isfolder('Nury/script')
+    local config_folder = isfolder('Nury/script/configs')
+
+	if not script_folder then
+        makefolder('Nury/script')
+	end
+
+    if not config_folder then
+        makefolder('Nury/script/configs')
+	end
+end
+
+UI.init_folders()
+
+function UI.save_config()
+    if not UI.is_loaded then
+        return
+    end
+
+	local config = HttpService:JSONEncode(UI.config)
+
+	writefile('Nury/script/configs/default.txt', config)
+end
+
+function UI.load_config()
+	if not isfile('Nury/script/configs/default.txt') then
+        warn('FILE IS NULL')
+
+		UI.save_config()
+
+		return
+	end
+
+	local config_file = readfile('Nury/script/configs/default.txt')
+
+	UI.config = HttpService:JSONDecode(config_file)
+end
+
+
+UI.load_config()
 
 function UI:get_screen_scale()
 	local viewport_size_x = workspace.CurrentCamera.ViewportSize.X
@@ -102,9 +149,9 @@ function UI:__init()
 	local UIListLayout_3 = Instance.new("UIListLayout")
 	local UIScale = Instance.new("UIScale", UI.background)
 
-	clickgui.Name = "clickgui"
-	clickgui.Parent = self.parent
-	clickgui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	clickgUI.Name = "clickgui"
+	clickgUI.Parent = self.parent
+	clickgUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 	UI.background.Name = "background"
 	UI.background.Parent = clickgui
@@ -245,7 +292,8 @@ function UI:create_category()
 	end
 
 	category.TouchTap:Connect(function()
-		
+		animate_functions(1)
+
 		TweenService:Create(UI.background.section_name, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
 			TextTransparency = 1
 		}):Play()
@@ -260,11 +308,10 @@ function UI:create_category()
 		end)
 		
 		UI.current_section = self.name
-
-		animate_functions(1)
 	end)
 
 	category.MouseButton1Up:Connect(function()
+		animate_functions(1)
 
 		TweenService:Create(UI.background.section_name, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
 			TextTransparency = 1
@@ -280,8 +327,6 @@ function UI:create_category()
 		end)
 		
 		UI.current_section = self.name
-
-		animate_functions(1)
 	end)
 	
 	RunService:BindToRenderStep('ui update', 100, function()
@@ -430,11 +475,44 @@ function UI:create_toggle(callback)
 	UIScale.Parent = example
 	UIScale.Scale = 0.800
 	
+	for __index, element in UI.config do
+        if element == self.name then
+            is_enabled = true
+		    callback(is_enabled)
+
+            TweenService:Create(UIScale, TweenInfo.new(0.3, Enum.EasingStyle.Exponential), {
+				Scale = 0
+			}):Play()
+			
+			TweenService:Create(example, TweenInfo.new(0.3, Enum.EasingStyle.Exponential), {
+				ImageTransparency = 1
+			}):Play()
+			
+			task.delay(0.3, function()
+				example.Image = "rbxassetid://18497538632"
+				
+				TweenService:Create(UIScale, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
+					Scale = 1.25
+				}):Play()
+				
+				TweenService:Create(example, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
+					ImageTransparency = 0
+				}):Play()
+				
+				TweenService:Create(toggle_frame, TweenInfo.new(0.65, Enum.EasingStyle.Exponential), {
+					BackgroundColor3 = Color3.fromRGB(114, 134, 200)
+				}):Play()
+			end)
+        end
+    end
+	
 	toggle_hitbox.MouseButton1Up:Connect(function()
 		is_enabled = not is_enabled
 		callback(is_enabled)
 
 		if is_enabled then
+			table.insert(UI.config, self.name)
+
 			TweenService:Create(UIScale, TweenInfo.new(0.3, Enum.EasingStyle.Exponential), {
 				Scale = 0
 			}):Play()
@@ -459,6 +537,12 @@ function UI:create_toggle(callback)
 				}):Play()
 			end)
 		else
+			for index, element in UI.config do
+                if element == self.name then
+                    table.remove(UI.config, index)
+                end
+            end
+
 			TweenService:Create(UIScale, TweenInfo.new(0.3, Enum.EasingStyle.Exponential), {
 				Scale = 0,
 			}):Play()
@@ -483,6 +567,8 @@ function UI:create_toggle(callback)
 				}):Play()
 			end)
 		end
+
+		UI.save_config()
 	end)
 end
 
