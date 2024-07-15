@@ -9,7 +9,7 @@ local RunService = game:GetService('RunService')
 
 local UI = {
 	have_keyboard = not game:GetService('UserInputService').KeyboardEnabled,
-	Exponentialground = Instance.new("Frame"),
+	background = Instance.new("Frame"),
 	currect_category = nil,
 	is_loaded = false,
 	is_open = true,
@@ -17,20 +17,20 @@ local UI = {
 	config = {},
 }
 
-if not isfolder('Nury') then
-	makefolder('Nury')
+if not isfolder('nurysium') then
+	makefolder('nurysium')
 end
 
 function UI.init_folders()
-    local script_folder = isfolder('Nury/script')
-    local config_folder = isfolder('Nury/script/configs')
+    local script_folder = isfolder('nurysium/script')
+    local config_folder = isfolder('nurysium/script/configs')
 
 	if not script_folder then
-        makefolder('Nury/script')
+        makefolder('nurysium/script')
 	end
 
     if not config_folder then
-        makefolder('Nury/script/configs')
+        makefolder('nurysium/script/configs')
 	end
 end
 
@@ -43,11 +43,11 @@ function UI.save_config()
 
 	local config = HttpService:JSONEncode(UI.config)
 
-	writefile(`Nury/script/configs/{game.GameId}.txt`, config)
+	writefile(`nurysium/script/configs/{game.PlaceId}.txt`, config)
 end
 
 function UI.load_config()
-	if not isfile(`Nury/script/configs/{game.GameId}.txt`) then
+	if not isfile(`nurysium/script/configs/{game.PlaceId}.txt`) then
         warn('FILE IS NULL')
 
 		UI.save_config()
@@ -55,7 +55,7 @@ function UI.load_config()
 		return
 	end
 
-	local config_file = readfile(`Nury/script/configs/{game.GameId}.txt`)
+	local config_file = readfile(`nurysium/script/configs/{game.PlaceId}.txt`)
 
 	UI.config = HttpService:JSONDecode(config_file)
 end
@@ -72,22 +72,22 @@ function UI:get_screen_scale()
 end
 
 local function animate_functions(speed: number)
-	UI.Exponentialground.left.UIListLayout.Padding = UDim.new(0, -500)
-	UI.Exponentialground.right.UIListLayout.Padding = UDim.new(0, -500)
+	UI.background.left.UIListLayout.Padding = UDim.new(0, -500)
+	UI.background.right.UIListLayout.Padding = UDim.new(0, -500)
 
-	TweenService:Create(UI.Exponentialground.left.UIListLayout, TweenInfo.new(speed, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+	TweenService:Create(UI.background.left.UIListLayout, TweenInfo.new(speed, Enum.EasingStyle.Back, Enum.EasingDirection.InOut), {
 		Padding = UDim.new(0, 10)
 	}):Play()
 	
-	TweenService:Create(UI.Exponentialground.right.UIListLayout, TweenInfo.new(speed, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+	TweenService:Create(UI.background.right.UIListLayout, TweenInfo.new(speed, Enum.EasingStyle.Back, Enum.EasingDirection.InOut), {
 		Padding = UDim.new(0, 10)
 	}):Play()
 end
 
 local function animate_sections(speed: number)
-	UI.Exponentialground.categorys.UIListLayout.Padding = UDim.new(-1, 0)
+	UI.background.categorys.UIListLayout.Padding = UDim.new(-1, 0)
 
-	TweenService:Create(UI.Exponentialground.categorys.UIListLayout, TweenInfo.new(speed, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+	TweenService:Create(UI.background.categorys.UIListLayout, TweenInfo.new(speed, Enum.EasingStyle.Back, Enum.EasingDirection.InOut), {
 		Padding = UDim.new(0.05, 0)
 	}):Play()
 end
@@ -104,7 +104,7 @@ function ui_open_close(self, input_state)
 	UI.is_open = not UI.is_open
 
 	if UI.is_open then
-		animate_sections(1)
+		animate_sections(1.1)
 
 		if not UI.currect_category then
 			return
@@ -118,18 +118,18 @@ ContextActionService:BindAction('Gui', ui_open_close, true, Enum.KeyCode.RightSh
 
 task.delay(0.2, function()
 	RunService:BindToRenderStep('render', 100, function()
-		if not UI.Exponentialground:FindFirstChildOfClass('UIScale') then
+		if not UI.background:FindFirstChildOfClass('UIScale') then
 			return
 		end
 
 		UI.get_screen_scale()
 		
 		if not UI.is_open then
-			TweenService:Create(UI.Exponentialground.UIScale, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
+			TweenService:Create(UI.background.UIScale, TweenInfo.new(0.45, Enum.EasingStyle.Back), {
 				Scale = 0
 			}):Play()
 		else
-			TweenService:Create(UI.Exponentialground.UIScale, TweenInfo.new(0.75, Enum.EasingStyle.Exponential), {
+			TweenService:Create(UI.background.UIScale, TweenInfo.new(0.75, Enum.EasingStyle.Back), {
 				Scale = UI.UI_scale
 			}):Play()
 		end
@@ -150,48 +150,48 @@ function UI:__init()
 	local UIListLayout_2 = Instance.new("UIListLayout")
 	local right = Instance.new("ScrollingFrame")
 	local UIListLayout_3 = Instance.new("UIListLayout")
-	local UIScale = Instance.new("UIScale", UI.Exponentialground)
+	local UIScale = Instance.new("UIScale", UI.background)
 
 	clickgui.Name = "clickgui"
 	clickgui.Parent = self.parent
 	clickgui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-	UI.Exponentialground.Name = "Exponentialground"
-	UI.Exponentialground.Parent = clickgui
-	UI.Exponentialground.AnchorPoint = Vector2.new(0.5, 0.5)
-	UI.Exponentialground.ExponentialgroundColor3 = Color3.fromRGB(13, 13, 13)
-	UI.Exponentialground.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	UI.Exponentialground.BorderSizePixel = 0
-	UI.Exponentialground.Position = UDim2.new(0.499778897, 0, 0.499488592, 0)
-	UI.Exponentialground.Size = UDim2.new(0, 918, 0, 558)
+	UI.background.Name = "background"
+	UI.background.Parent = clickgui
+	UI.background.AnchorPoint = Vector2.new(0.5, 0.5)
+	UI.background.BackgroundColor3 = Color3.fromRGB(13, 13, 13)
+	UI.background.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	UI.background.BorderSizePixel = 0
+	UI.background.Position = UDim2.new(0.499778897, 0, 0.499488592, 0)
+	UI.background.Size = UDim2.new(0, 918, 0, 558)
 
 	UICorner.CornerRadius = UDim.new(0, 15)
-	UICorner.Parent = UI.Exponentialground
+	UICorner.Parent = UI.background
 
 	left_line.Name = "left_line"
-	left_line.Parent = UI.Exponentialground
+	left_line.Parent = UI.background
 	left_line.AnchorPoint = Vector2.new(0.5, 0.5)
-	left_line.ExponentialgroundColor3 = Color3.fromRGB(27, 27, 27)
-	left_line.ExponentialgroundTransparency = 0.400
+	left_line.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+	left_line.BackgroundTransparency = 0.400
 	left_line.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	left_line.BorderSizePixel = 0
 	left_line.Position = UDim2.new(0.120744295, 0, 0.5, 0)
 	left_line.Size = UDim2.new(0, 2, 0, 558)
 
 	upper_line.Name = "upper_line"
-	upper_line.Parent = UI.Exponentialground
+	upper_line.Parent = UI.background
 	upper_line.AnchorPoint = Vector2.new(0.5, 0.5)
-	upper_line.ExponentialgroundColor3 = Color3.fromRGB(27, 27, 27)
-	upper_line.ExponentialgroundTransparency = 0.400
+	upper_line.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+	upper_line.BackgroundTransparency = 0.400
 	upper_line.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	upper_line.BorderSizePixel = 0
 	upper_line.Position = UDim2.new(0.560345948, 0, 0.127536684, 0)
 	upper_line.Size = UDim2.new(0, 807, 0, 2)
 
 	section_name.Name = "section_name"
-	section_name.Parent = UI.Exponentialground
-	section_name.ExponentialgroundColor3 = Color3.fromRGB(255, 255, 255)
-	section_name.ExponentialgroundTransparency = 1.000
+	section_name.Parent = UI.background
+	section_name.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	section_name.BackgroundTransparency = 1.000
 	section_name.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	section_name.BorderSizePixel = 0
 	section_name.Position = UDim2.new(0.146055132, 0, 0.0391234793, 0)
@@ -205,10 +205,10 @@ function UI:__init()
 	section_name.TextXAlignment = Enum.TextXAlignment.Left
 
 	categorys.Name = "categorys"
-	categorys.Parent = UI.Exponentialground
+	categorys.Parent = UI.background
 	categorys.Active = true
-	categorys.ExponentialgroundColor3 = Color3.fromRGB(255, 255, 255)
-	categorys.ExponentialgroundTransparency = 1.000
+	categorys.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	categorys.BackgroundTransparency = 1.000
 	categorys.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	categorys.BorderSizePixel = 0
 	categorys.Position = UDim2.new(0, 0, 5.46910002e-08, 0)
@@ -224,11 +224,11 @@ function UI:__init()
 	UIListLayout.Padding = UDim.new(0.0500000007, 0)
 
 	left.Name = "left"
-	left.Parent = UI.Exponentialground
+	left.Parent = UI.background
 	left.Active = true
 	left.AnchorPoint = Vector2.new(0.5, 0.5)
-	left.ExponentialgroundColor3 = Color3.fromRGB(255, 255, 255)
-	left.ExponentialgroundTransparency = 1.000
+	left.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	left.BackgroundTransparency = 1.000
 	left.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	left.BorderSizePixel = 0
 	left.Position = UDim2.new(0.354836732, 0, 0.564450264, 0)
@@ -242,11 +242,11 @@ function UI:__init()
 	UIListLayout_2.Padding = UDim.new(0, 10)
 
 	right.Name = "right"
-	right.Parent = UI.Exponentialground
+	right.Parent = UI.background
 	right.Active = true
 	right.AnchorPoint = Vector2.new(0.5, 0.5)
-	right.ExponentialgroundColor3 = Color3.fromRGB(255, 255, 255)
-	right.ExponentialgroundTransparency = 1.000
+	right.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	right.BackgroundTransparency = 1.000
 	right.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	right.BorderSizePixel = 0
 	right.Position = UDim2.new(0.764422774, 0, 0.564450264, 0)
@@ -261,7 +261,7 @@ function UI:__init()
 	
 	UIScale.Scale = 0
 	
-	TweenService:Create(UIScale, TweenInfo.new(0.85, Enum.EasingStyle.Exponential), {
+	TweenService:Create(UIScale, TweenInfo.new(0.85, Enum.EasingStyle.Back), {
 		Scale = UI.UI_scale
 	}):Play()
 end
@@ -270,9 +270,9 @@ function UI:create_category()
 	local category = Instance.new("ImageButton")
 
 	category.Name = self.name
-	category.Parent = UI.Exponentialground.categorys
-	category.ExponentialgroundColor3 = Color3.fromRGB(255, 255, 255)
-	category.ExponentialgroundTransparency = 1.000
+	category.Parent = UI.background.categorys
+	category.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	category.BackgroundTransparency = 1.000
 	category.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	category.BorderSizePixel = 0
 	category.Position = UDim2.new(-0.26735577, 0, 0, 0)
@@ -297,15 +297,15 @@ function UI:create_category()
 	category.TouchTap:Connect(function()
 		animate_functions(0.65)
 
-		TweenService:Create(UI.Exponentialground.section_name, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
+		TweenService:Create(UI.background.section_name, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
 			TextTransparency = 1
 		}):Play()
 
 		task.delay(0.5, function()
-			UI.Exponentialground.section_name.Text = category.Name
+			UI.background.section_name.Text = category.Name
 			UI.currect_category = category.Name
 
-			TweenService:Create(UI.Exponentialground.section_name, TweenInfo.new(0.65, Enum.EasingStyle.Exponential), {
+			TweenService:Create(UI.background.section_name, TweenInfo.new(0.65, Enum.EasingStyle.Exponential), {
 				TextTransparency = 0
 			}):Play()
 		end)
@@ -316,15 +316,15 @@ function UI:create_category()
 	category.MouseButton1Up:Connect(function()
 		animate_functions(0.65)
 
-		TweenService:Create(UI.Exponentialground.section_name, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
+		TweenService:Create(UI.background.section_name, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
 			TextTransparency = 1
 		}):Play()
 
 		task.delay(0.5, function()
-			UI.Exponentialground.section_name.Text = category.Name
+			UI.background.section_name.Text = category.Name
 			UI.currect_category = category.Name
 			
-			TweenService:Create(UI.Exponentialground.section_name, TweenInfo.new(0.65, Enum.EasingStyle.Exponential), {
+			TweenService:Create(UI.background.section_name, TweenInfo.new(0.65, Enum.EasingStyle.Exponential), {
 				TextTransparency = 0
 			}):Play()
 		end)
@@ -354,8 +354,8 @@ function UI:create_section()
 	local UIPadding = Instance.new("UIPadding")
 
 	example.Name = self.name
-	example.Parent = UI.Exponentialground:FindFirstChild(self.side:lower())
-	example.ExponentialgroundColor3 = Color3.fromRGB(17, 17, 17)
+	example.Parent = UI.background:FindFirstChild(self.side:lower())
+	example.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
 	example.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	example.BorderSizePixel = 0
 	example.Size = UDim2.new(0, 345, 0, 62)
@@ -367,8 +367,8 @@ function UI:create_section()
 	container.Name = "container"
 	container.Parent = example
 	container.AnchorPoint = Vector2.new(0.5, 0.5)
-	container.ExponentialgroundColor3 = Color3.fromRGB(17, 2, 11)
-	container.ExponentialgroundTransparency = 1.000
+	container.BackgroundColor3 = Color3.fromRGB(17, 2, 11)
+	container.BackgroundTransparency = 1.000
 	container.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	container.BorderSizePixel = 0
 	container.Position = UDim2.new(-1.03913521e-06, 0, 0, 0)
@@ -377,8 +377,8 @@ function UI:create_section()
 
 	container_2.Name = "container"
 	container_2.Parent = container
-	container_2.ExponentialgroundColor3 = Color3.fromRGB(17, 2, 11)
-	container_2.ExponentialgroundTransparency = 1.000
+	container_2.BackgroundColor3 = Color3.fromRGB(17, 2, 11)
+	container_2.BackgroundTransparency = 1.000
 	container_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	container_2.BorderSizePixel = 0
 	container_2.Position = UDim2.new(-0.045000162, 0, 0, 0)
@@ -387,8 +387,8 @@ function UI:create_section()
 
 	name.Name = self.name
 	name.Parent = container_2
-	name.ExponentialgroundColor3 = Color3.fromRGB(255, 255, 255)
-	name.ExponentialgroundTransparency = 1.000
+	name.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	name.BackgroundTransparency = 1.000
 	name.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	name.BorderSizePixel = 0
 	name.Position = UDim2.new(0.0421025828, 0, 0.188894719, 0)
@@ -403,8 +403,8 @@ function UI:create_section()
 	line.Name = "line"
 	line.Parent = container_2
 	line.AnchorPoint = Vector2.new(0.5, 0.5)
-	line.ExponentialgroundColor3 = Color3.fromRGB(27, 27, 27)
-	line.ExponentialgroundTransparency = 0.400
+	line.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+	line.BackgroundTransparency = 0.400
 	line.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	line.BorderSizePixel = 0
 	line.Position = UDim2.new(0.496712953, 0, 0.877659559, 0)
@@ -423,9 +423,9 @@ function UI:create_section()
 	end)
 end
 
-function UI:create_toggle(callExponential)
+function UI:create_toggle(callback)
 	local is_enabled: boolean = false
-	callExponential = callExponential or function() end
+	callback = callback or function() end
 	
 	local toggle_hitbox = Instance.new("TextButton")
 	local toggle_frame = Instance.new("Frame")
@@ -434,9 +434,9 @@ function UI:create_toggle(callExponential)
 	local UIScale = Instance.new("UIScale")
 
 	toggle_hitbox.Name = self.name
-	toggle_hitbox.Parent = UI.Exponentialground:FindFirstChild(self.side):FindFirstChild(self.section)
-	toggle_hitbox.ExponentialgroundColor3 = Color3.fromRGB(255, 255, 255)
-	toggle_hitbox.ExponentialgroundTransparency = 1.000
+	toggle_hitbox.Parent = UI.background:FindFirstChild(self.side):FindFirstChild(self.section)
+	toggle_hitbox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	toggle_hitbox.BackgroundTransparency = 1.000
 	toggle_hitbox.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	toggle_hitbox.BorderSizePixel = 0
 	toggle_hitbox.Position = UDim2.new(7.23631786e-08, 0, 0.469101131, 0)
@@ -451,8 +451,8 @@ function UI:create_toggle(callExponential)
 	toggle_frame.Name = "toggle"
 	toggle_frame.Parent = toggle_hitbox
 	toggle_frame.AnchorPoint = Vector2.new(0.5, 0.5)
-	toggle_frame.ExponentialgroundColor3 = Color3.fromRGB(27, 27, 27)
-	toggle_frame.ExponentialgroundTransparency = 0.400
+	toggle_frame.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+	toggle_frame.BackgroundTransparency = 0.400
 	toggle_frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	toggle_frame.BorderSizePixel = 0
 	toggle_frame.Position = UDim2.new(1.20000005, 0, 0.482483804, 0)
@@ -465,8 +465,8 @@ function UI:create_toggle(callExponential)
 	example.Name = "example"
 	example.Parent = toggle_frame
 	example.AnchorPoint = Vector2.new(0.5, 0.5)
-	example.ExponentialgroundColor3 = Color3.fromRGB(255, 255, 255)
-	example.ExponentialgroundTransparency = 1.000
+	example.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	example.BackgroundTransparency = 1.000
 	example.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	example.BorderSizePixel = 0
 	example.Position = UDim2.new(0.519999981, 0, 0.479999989, 0)
@@ -481,7 +481,7 @@ function UI:create_toggle(callExponential)
 	for __index, element in UI.config do
         if element == self.ID then
             is_enabled = true
-		    callExponential(is_enabled)
+		    callback(is_enabled)
 
             TweenService:Create(UIScale, TweenInfo.new(0.3, Enum.EasingStyle.Exponential), {
 				Scale = 0
@@ -503,7 +503,7 @@ function UI:create_toggle(callExponential)
 				}):Play()
 				
 				TweenService:Create(toggle_frame, TweenInfo.new(0.65, Enum.EasingStyle.Exponential), {
-					ExponentialgroundColor3 = Color3.fromRGB(114, 134, 200)
+					BackgroundColor3 = Color3.fromRGB(114, 134, 200)
 				}):Play()
 			end)
         end
@@ -511,7 +511,7 @@ function UI:create_toggle(callExponential)
 	
 	toggle_hitbox.MouseButton1Up:Connect(function()
 		is_enabled = not is_enabled
-		callExponential(is_enabled)
+		callback(is_enabled)
 
 		if is_enabled then
 			table.insert(UI.config, self.ID)
@@ -536,7 +536,7 @@ function UI:create_toggle(callExponential)
 				}):Play()
 				
 				TweenService:Create(toggle_frame, TweenInfo.new(0.65, Enum.EasingStyle.Exponential), {
-					ExponentialgroundColor3 = Color3.fromRGB(114, 134, 200)
+					BackgroundColor3 = Color3.fromRGB(114, 134, 200)
 				}):Play()
 			end)
 		else
@@ -566,7 +566,7 @@ function UI:create_toggle(callExponential)
 				}):Play()
 				
 				TweenService:Create(toggle_frame, TweenInfo.new(0.65, Enum.EasingStyle.Exponential), {
-					ExponentialgroundColor3 = Color3.fromRGB(27, 27, 27)
+					BackgroundColor3 = Color3.fromRGB(27, 27, 27)
 				}):Play()
 			end)
 		end
