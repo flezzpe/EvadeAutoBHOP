@@ -72,14 +72,14 @@ function UI:get_screen_scale()
 end
 
 local function animate_functions(speed: number)
-	UI.background.left.UIListLayout.Padding = UDim.new(0, 500)
-	UI.background.right.UIListLayout.Padding = UDim.new(0, 500)
+	UI.background.left.UIListLayout.Padding = UDim.new(0, 300)
+	UI.background.right.UIListLayout.Padding = UDim.new(0, 300)
 
-	TweenService:Create(UI.background.left.UIListLayout, TweenInfo.new(speed, Enum.EasingStyle.Back, Enum.EasingDirection.InOut), {
+	TweenService:Create(UI.background.left.UIListLayout, TweenInfo.new(speed, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
 		Padding = UDim.new(0, 10)
 	}):Play()
 	
-	TweenService:Create(UI.background.right.UIListLayout, TweenInfo.new(speed, Enum.EasingStyle.Back, Enum.EasingDirection.InOut), {
+	TweenService:Create(UI.background.right.UIListLayout, TweenInfo.new(speed, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
 		Padding = UDim.new(0, 10)
 	}):Play()
 end
@@ -297,48 +297,46 @@ function UI:create_category()
 	category.TouchTap:Connect(function()
 		animate_functions(0.65)
 
+		UI.currect_category = self.Name
+
 		TweenService:Create(UI.background.section_name, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
 			TextTransparency = 1
 		}):Play()
 
 		task.delay(0.5, function()
 			UI.background.section_name.Text = category.Name
-			UI.currect_category = category.Name
 
 			TweenService:Create(UI.background.section_name, TweenInfo.new(0.65, Enum.EasingStyle.Exponential), {
 				TextTransparency = 0
 			}):Play()
 		end)
-		
-		UI.current_section = self.name
 	end)
 
 	category.MouseButton1Up:Connect(function()
 		animate_functions(0.65)
 
+		UI.currect_category = self.Name
+
 		TweenService:Create(UI.background.section_name, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
 			TextTransparency = 1
 		}):Play()
 
 		task.delay(0.5, function()
 			UI.background.section_name.Text = category.Name
-			UI.currect_category = category.Name
 			
 			TweenService:Create(UI.background.section_name, TweenInfo.new(0.65, Enum.EasingStyle.Exponential), {
 				TextTransparency = 0
 			}):Play()
 		end)
-		
-		UI.current_section = self.name
 	end)
 	
 	RunService:BindToRenderStep('ui update', 100, function()
-		if not UI.current_section then
+		if not UI.currect_category then
 			return
 		end
 
 		TweenService:Create(category, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
-			ImageTransparency = (category.Name == UI.current_section and 0 or 0.65)
+			ImageTransparency = (category.Name == UI.currect_category and 0 or 0.65)
 		}):Play()
 	end)
 end
