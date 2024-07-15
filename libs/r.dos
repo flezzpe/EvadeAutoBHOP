@@ -1,0 +1,489 @@
+repeat
+	task.wait()
+until game:IsLoaded()
+
+local ContextActionService = game:GetService('ContextActionService')
+local TweenService = game:GetService('TweenService')
+local HttpService = game:GetService('HttpService')
+local RunService = game:GetService('RunService')
+
+local UI = {
+	have_keyboard = not game:GetService('UserInputService').KeyboardEnabled,
+	background = Instance.new("Frame"),
+	currect_category = nil,
+	is_open = true,
+	UI_scale = 0
+}
+
+function UI:get_screen_scale()
+	local viewport_size_x = workspace.CurrentCamera.ViewportSize.X
+	local viewport_size_y = workspace.CurrentCamera.ViewportSize.Y
+	local screen_size = (viewport_size_x + viewport_size_y) / 3500
+
+	UI.UI_scale = screen_size + math.max(0.85 - screen_size, 0)
+end
+
+local function animate_functions(speed: number)
+	UI.background.left.UIListLayout.Padding = UDim.new(0, -500)
+	UI.background.right.UIListLayout.Padding = UDim.new(0, -500)
+
+	TweenService:Create(UI.background.left.UIListLayout, TweenInfo.new(speed, Enum.EasingStyle.Back, Enum.EasingDirection.InOut), {
+		Padding = UDim.new(0, 10)
+	}):Play()
+	
+	TweenService:Create(UI.background.right.UIListLayout, TweenInfo.new(speed, Enum.EasingStyle.Back, Enum.EasingDirection.InOut), {
+		Padding = UDim.new(0, 10)
+	}):Play()
+end
+
+local function animate_sections(speed: number)
+	UI.background.categorys.UIListLayout.Padding = UDim.new(-0.05, 0)
+
+	TweenService:Create(UI.background.categorys.UIListLayout, TweenInfo.new(speed, Enum.EasingStyle.Back, Enum.EasingDirection.InOut), {
+		Padding = UDim.new(0.05, 0)
+	}):Play()
+end
+
+function ui_open_close(self, input_state)
+	if not self then
+		return
+	end
+
+	if input_state ~= Enum.UserInputState.Begin then
+		return
+	end
+
+	UI.is_open = not UI.is_open
+
+	if UI.is_open then
+		animate_sections(1.3)
+
+		if not UI.currect_category then
+			return
+		end
+
+		animate_functions(1)
+	end
+end
+
+ContextActionService:BindAction('Gui', ui_open_close, true, Enum.KeyCode.RightShift)
+
+task.delay(0.2, function()
+	RunService:BindToRenderStep('render', 100, function()
+		if not UI.background:FindFirstChildOfClass('UIScale') then
+			return
+		end
+
+		UI.get_screen_scale()
+		
+		if not UI.is_open then
+			TweenService:Create(UI.background.UIScale, TweenInfo.new(0.45, Enum.EasingStyle.Back), {
+				Scale = 0
+			}):Play()
+		else
+			TweenService:Create(UI.background.UIScale, TweenInfo.new(0.75, Enum.EasingStyle.Back), {
+				Scale = UI.UI_scale
+			}):Play()
+		end
+	end)
+end)
+
+function UI:__init()	
+	local clickgui = Instance.new("ScreenGui")
+	local UICorner = Instance.new("UICorner")
+	local left_line = Instance.new("Frame")
+	local upper_line = Instance.new("Frame")
+	local section_name = Instance.new("TextLabel")
+	local categorys = Instance.new("ScrollingFrame")
+	local UIListLayout = Instance.new("UIListLayout")
+	local left = Instance.new("ScrollingFrame")
+	local UIListLayout_2 = Instance.new("UIListLayout")
+	local right = Instance.new("ScrollingFrame")
+	local UIListLayout_3 = Instance.new("UIListLayout")
+	local UIScale = Instance.new("UIScale", UI.background)
+
+	clickgui.Name = "clickgui"
+	clickgui.Parent = self.parent
+	clickgui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+	UI.background.Name = "background"
+	UI.background.Parent = clickgui
+	UI.background.AnchorPoint = Vector2.new(0.5, 0.5)
+	UI.background.BackgroundColor3 = Color3.fromRGB(13, 13, 13)
+	UI.background.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	UI.background.BorderSizePixel = 0
+	UI.background.Position = UDim2.new(0.499778897, 0, 0.499488592, 0)
+	UI.background.Size = UDim2.new(0, 918, 0, 558)
+
+	UICorner.CornerRadius = UDim.new(0, 15)
+	UICorner.Parent = UI.background
+
+	left_line.Name = "left_line"
+	left_line.Parent = UI.background
+	left_line.AnchorPoint = Vector2.new(0.5, 0.5)
+	left_line.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+	left_line.BackgroundTransparency = 0.400
+	left_line.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	left_line.BorderSizePixel = 0
+	left_line.Position = UDim2.new(0.120744295, 0, 0.5, 0)
+	left_line.Size = UDim2.new(0, 2, 0, 558)
+
+	upper_line.Name = "upper_line"
+	upper_line.Parent = UI.background
+	upper_line.AnchorPoint = Vector2.new(0.5, 0.5)
+	upper_line.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+	upper_line.BackgroundTransparency = 0.400
+	upper_line.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	upper_line.BorderSizePixel = 0
+	upper_line.Position = UDim2.new(0.560345948, 0, 0.127536684, 0)
+	upper_line.Size = UDim2.new(0, 807, 0, 2)
+
+	section_name.Name = "section_name"
+	section_name.Parent = UI.background
+	section_name.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	section_name.BackgroundTransparency = 1.000
+	section_name.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	section_name.BorderSizePixel = 0
+	section_name.Position = UDim2.new(0.146055132, 0, 0.0391234793, 0)
+	section_name.Size = UDim2.new(0, 125, 0, 25)
+	section_name.Font = Enum.Font.GothamMedium
+	section_name.Text = "None"
+	section_name.TextColor3 = Color3.fromRGB(255, 255, 255)
+	section_name.TextScaled = true
+	section_name.TextSize = 14.000
+	section_name.TextWrapped = true
+	section_name.TextXAlignment = Enum.TextXAlignment.Left
+
+	categorys.Name = "categorys"
+	categorys.Parent = UI.background
+	categorys.Active = true
+	categorys.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	categorys.BackgroundTransparency = 1.000
+	categorys.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	categorys.BorderSizePixel = 0
+	categorys.Position = UDim2.new(0, 0, 5.46910002e-08, 0)
+	categorys.Size = UDim2.new(0, 110, 0, 556)
+	categorys.ScrollBarImageColor3 = Color3.fromRGB(0, 0, 0)
+	categorys.CanvasSize = UDim2.new(0, 0, 0, 0)
+	categorys.ScrollBarThickness = 0
+
+	UIListLayout.Parent = categorys
+	UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+	UIListLayout.Padding = UDim.new(0.0500000007, 0)
+
+	left.Name = "left"
+	left.Parent = UI.background
+	left.Active = true
+	left.AnchorPoint = Vector2.new(0.5, 0.5)
+	left.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	left.BackgroundTransparency = 1.000
+	left.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	left.BorderSizePixel = 0
+	left.Position = UDim2.new(0.354836732, 0, 0.564450264, 0)
+	left.Size = UDim2.new(0, 356, 0, 461)
+	left.ScrollBarImageColor3 = Color3.fromRGB(0, 0, 0)
+	left.CanvasSize = UDim2.new(0, 0, 50, 0)
+	left.ScrollBarThickness = 0
+
+	UIListLayout_2.Parent = left
+	UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
+	UIListLayout_2.Padding = UDim.new(0, 10)
+
+	right.Name = "right"
+	right.Parent = UI.background
+	right.Active = true
+	right.AnchorPoint = Vector2.new(0.5, 0.5)
+	right.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	right.BackgroundTransparency = 1.000
+	right.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	right.BorderSizePixel = 0
+	right.Position = UDim2.new(0.764422774, 0, 0.564450264, 0)
+	right.Size = UDim2.new(0, 356, 0, 461)
+	right.ScrollBarImageColor3 = Color3.fromRGB(0, 0, 0)
+	right.CanvasSize = UDim2.new(0, 0, 50, 0)
+	right.ScrollBarThickness = 0
+
+	UIListLayout_3.Parent = right
+	UIListLayout_3.SortOrder = Enum.SortOrder.LayoutOrder
+	UIListLayout_3.Padding = UDim.new(0, 10)
+	
+	UIScale.Scale = 0
+	
+	TweenService:Create(UIScale, TweenInfo.new(0.85, Enum.EasingStyle.Back), {
+		Scale = UI.UI_scale
+	}):Play()
+end
+
+function UI:create_category()
+	local category = Instance.new("ImageButton")
+
+	category.Name = self.name
+	category.Parent = UI.background.categorys
+	category.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	category.BackgroundTransparency = 1.000
+	category.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	category.BorderSizePixel = 0
+	category.Position = UDim2.new(-0.26735577, 0, 0, 0)
+	category.Size = UDim2.new(0, 40, 0, 40)
+	category.Image = `rbxassetid://{self.image}`
+	category.ImageTransparency = 0.650
+	
+	if not UI.have_keyboard then
+		category.MouseEnter:Connect(function()
+			TweenService:Create(category, TweenInfo.new(0.65, Enum.EasingStyle.Exponential), {
+				Size = UDim2.new(0, 50, 0, 50)
+			}):Play()
+		end)
+
+		category.MouseLeave:Connect(function()
+			TweenService:Create(category, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
+				Size = UDim2.new(0, 40, 0, 40)
+			}):Play()
+		end)	
+	end
+
+	category.TouchTap:Connect(function()
+		
+		TweenService:Create(UI.background.section_name, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
+			TextTransparency = 1
+		}):Play()
+
+		task.delay(0.5, function()
+			UI.background.section_name.Text = category.Name
+			UI.currect_category = category.Name
+
+			TweenService:Create(UI.background.section_name, TweenInfo.new(0.65, Enum.EasingStyle.Exponential), {
+				TextTransparency = 0
+			}):Play()
+		end)
+		
+		UI.current_section = self.name
+
+		animate_functions(1)
+	end)
+
+	category.MouseButton1Up:Connect(function()
+
+		TweenService:Create(UI.background.section_name, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
+			TextTransparency = 1
+		}):Play()
+
+		task.delay(0.5, function()
+			UI.background.section_name.Text = category.Name
+			UI.currect_category = category.Name
+			
+			TweenService:Create(UI.background.section_name, TweenInfo.new(0.65, Enum.EasingStyle.Exponential), {
+				TextTransparency = 0
+			}):Play()
+		end)
+		
+		UI.current_section = self.name
+
+		animate_functions(1)
+	end)
+	
+	RunService:BindToRenderStep('ui update', 100, function()
+		if not UI.current_section then
+			return
+		end
+
+		TweenService:Create(category, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
+			ImageTransparency = (category.Name == UI.current_section and 0 or 0.65)
+		}):Play()
+	end)
+end
+
+function UI:create_section()
+	local example = Instance.new("Frame")
+	local UICorner = Instance.new("UICorner")
+	local container = Instance.new("Frame")
+	local container_2 = Instance.new("Frame")
+	local name = Instance.new("TextLabel")
+	local line = Instance.new("Frame")
+	local UIListLayout = Instance.new("UIListLayout")
+	local UIPadding = Instance.new("UIPadding")
+
+	example.Name = self.name
+	example.Parent = UI.background:FindFirstChild(self.side:lower())
+	example.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
+	example.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	example.BorderSizePixel = 0
+	example.Size = UDim2.new(0, 345, 0, 62)
+	example.AutomaticSize = Enum.AutomaticSize.Y
+
+	UICorner.CornerRadius = UDim.new(0, 10)
+	UICorner.Parent = example
+
+	container.Name = "container"
+	container.Parent = example
+	container.AnchorPoint = Vector2.new(0.5, 0.5)
+	container.BackgroundColor3 = Color3.fromRGB(17, 2, 11)
+	container.BackgroundTransparency = 1.000
+	container.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	container.BorderSizePixel = 0
+	container.Position = UDim2.new(-1.03913521e-06, 0, 0, 0)
+	container.Size = UDim2.new(0, 329, 0, 45)
+	container.ZIndex = 0
+
+	container_2.Name = "container"
+	container_2.Parent = container
+	container_2.BackgroundColor3 = Color3.fromRGB(17, 2, 11)
+	container_2.BackgroundTransparency = 1.000
+	container_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	container_2.BorderSizePixel = 0
+	container_2.Position = UDim2.new(-0.045000162, 0, 0, 0)
+	container_2.Size = UDim2.new(0, 345, 0, 47)
+	container_2.ZIndex = 0
+
+	name.Name = self.name
+	name.Parent = container_2
+	name.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	name.BackgroundTransparency = 1.000
+	name.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	name.BorderSizePixel = 0
+	name.Position = UDim2.new(0.0421025828, 0, 0.188894719, 0)
+	name.Size = UDim2.new(0, 311, 0, 25)
+	name.Font = Enum.Font.GothamMedium
+	name.Text = self.display_name
+	name.TextColor3 = Color3.fromRGB(255, 255, 255)
+	name.TextSize = 19.000
+	name.TextWrapped = true
+	name.TextXAlignment = Enum.TextXAlignment.Left
+
+	line.Name = "line"
+	line.Parent = container_2
+	line.AnchorPoint = Vector2.new(0.5, 0.5)
+	line.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+	line.BackgroundTransparency = 0.400
+	line.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	line.BorderSizePixel = 0
+	line.Position = UDim2.new(0.496712953, 0, 0.877659559, 0)
+	line.Size = UDim2.new(0, 344, 0, 1)
+
+	UIListLayout.Parent = example
+	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+	UIListLayout.Padding = UDim.new(0, 4)
+
+	UIPadding.Parent = example
+	UIPadding.PaddingLeft = UDim.new(0.0450000018, 0)
+	
+	RunService:BindToRenderStep('section updater', 100, function()
+		example.Visible = self.category == UI.currect_category
+	end)
+end
+
+function UI:create_toggle(callback)
+	local is_enabled: boolean = false
+	callback = callback or function() end
+	
+	local toggle_hitbox = Instance.new("TextButton")
+	local toggle_frame = Instance.new("Frame")
+	local UICorner = Instance.new("UICorner")
+	local example = Instance.new("ImageLabel")
+	local UIScale = Instance.new("UIScale")
+
+	toggle_hitbox.Name = self.name
+	toggle_hitbox.Parent = UI.background:FindFirstChild(self.side):FindFirstChild(self.section)
+	toggle_hitbox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	toggle_hitbox.BackgroundTransparency = 1.000
+	toggle_hitbox.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	toggle_hitbox.BorderSizePixel = 0
+	toggle_hitbox.Position = UDim2.new(7.23631786e-08, 0, 0.469101131, 0)
+	toggle_hitbox.Size = UDim2.new(0, 252, 0, 34)
+	toggle_hitbox.Font = Enum.Font.GothamMedium
+	toggle_hitbox.Text = self.display_name
+	toggle_hitbox.TextColor3 = Color3.fromRGB(255, 255, 255)
+	toggle_hitbox.TextSize = 18.000
+	toggle_hitbox.TextWrapped = true
+	toggle_hitbox.TextXAlignment = Enum.TextXAlignment.Left
+
+	toggle_frame.Name = "toggle"
+	toggle_frame.Parent = toggle_hitbox
+	toggle_frame.AnchorPoint = Vector2.new(0.5, 0.5)
+	toggle_frame.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+	toggle_frame.BackgroundTransparency = 0.400
+	toggle_frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	toggle_frame.BorderSizePixel = 0
+	toggle_frame.Position = UDim2.new(1.20000005, 0, 0.482483804, 0)
+	toggle_frame.Size = UDim2.new(0, 20, 0, 20)
+	toggle_frame.ZIndex = 15
+
+	UICorner.CornerRadius = UDim.new(0.200000003, 0)
+	UICorner.Parent = toggle_frame
+
+	example.Name = "example"
+	example.Parent = toggle_frame
+	example.AnchorPoint = Vector2.new(0.5, 0.5)
+	example.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	example.BackgroundTransparency = 1.000
+	example.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	example.BorderSizePixel = 0
+	example.Position = UDim2.new(0.519999981, 0, 0.479999989, 0)
+	example.Size = UDim2.new(0, 10, 0, 10)
+	example.ZIndex = 5
+	example.Image = "rbxassetid://18497520940"
+	example.ImageTransparency = 0.450
+
+	UIScale.Parent = example
+	UIScale.Scale = 0.800
+	
+	toggle_hitbox.MouseButton1Up:Connect(function()
+		is_enabled = not is_enabled
+		callback(is_enabled)
+
+		if is_enabled then
+			TweenService:Create(UIScale, TweenInfo.new(0.3, Enum.EasingStyle.Exponential), {
+				Scale = 0
+			}):Play()
+			
+			TweenService:Create(example, TweenInfo.new(0.3, Enum.EasingStyle.Exponential), {
+				ImageTransparency = 1
+			}):Play()
+			
+			task.delay(0.3, function()
+				example.Image = "rbxassetid://18497538632"
+				
+				TweenService:Create(UIScale, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
+					Scale = 1.25
+				}):Play()
+				
+				TweenService:Create(example, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
+					ImageTransparency = 0
+				}):Play()
+				
+				TweenService:Create(toggle_frame, TweenInfo.new(0.65, Enum.EasingStyle.Exponential), {
+					BackgroundColor3 = Color3.fromRGB(114, 134, 200)
+				}):Play()
+			end)
+		else
+			TweenService:Create(UIScale, TweenInfo.new(0.3, Enum.EasingStyle.Exponential), {
+				Scale = 0,
+			}):Play()
+			
+			TweenService:Create(example, TweenInfo.new(0.3, Enum.EasingStyle.Exponential), {
+				ImageTransparency = 1
+			}):Play()
+			
+			task.delay(0.3, function()
+				example.Image = "rbxassetid://18497520940"
+				
+				TweenService:Create(UIScale, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
+					Scale = 0.8
+				}):Play()
+				
+				TweenService:Create(example, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
+					ImageTransparency = 0.45
+				}):Play()
+				
+				TweenService:Create(toggle_frame, TweenInfo.new(0.65, Enum.EasingStyle.Exponential), {
+					BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+				}):Play()
+			end)
+		end
+	end)
+end
+
+return UI
