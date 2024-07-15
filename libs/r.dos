@@ -129,7 +129,7 @@ task.delay(0.2, function()
 				Scale = 0
 			}):Play()
 		else
-			TweenService:Create(UI.background.UIScale, TweenInfo.new(0.75, Enum.EasingStyle.Back), {
+			TweenService:Create(UI.background.UIScale, TweenInfo.new(0.45, Enum.EasingStyle.Back), {
 				Scale = UI.UI_scale
 			}):Play()
 		end
@@ -295,7 +295,11 @@ function UI:create_category()
 	end
 
 	category.TouchTap:Connect(function()
-		animate_functions(1.45)
+		if UI.currect_category == self.name then
+			return
+		end
+
+		animate_functions(1.25)
 
 		UI.currect_category = self.name
 
@@ -313,7 +317,11 @@ function UI:create_category()
 	end)
 
 	category.MouseButton1Up:Connect(function()
-		animate_functions(1.45)
+		if UI.currect_category == self.name then
+			return
+		end
+
+		animate_functions(1.25)
 
 		UI.currect_category = self.name
 
@@ -417,9 +425,6 @@ function UI:create_section()
 	UIPadding.PaddingLeft = UDim.new(0.0450000018, 0)
 	
 	RunService:BindToRenderStep('section updater', 100, function()
-		warn(self.category)
-		print(UI.currect_category)
-
 		example.Visible = self.category == UI.currect_category
 	end)
 end
