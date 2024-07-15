@@ -11,9 +11,10 @@ local UI = {
 	have_keyboard = not game:GetService('UserInputService').KeyboardEnabled,
 	background = Instance.new("Frame"),
 	currect_category = nil,
+	is_loaded = false,
 	is_open = true,
 	UI_scale = 0,
-	config = {}
+	config = {},
 }
 
 if not isfolder('Nury') then
@@ -135,7 +136,9 @@ task.delay(0.2, function()
 	end)
 end)
 
-function UI:__init()	
+function UI:__init()
+	UI.is_loaded = true
+
 	local clickgui = Instance.new("ScreenGui")
 	local UICorner = Instance.new("UICorner")
 	local left_line = Instance.new("Frame")
