@@ -43,11 +43,11 @@ function UI.save_config()
 
 	local config = HttpService:JSONEncode(UI.config)
 
-	writefile(`nurysium/script/configs/{game.PlaceId}.txt`, config)
+	writefile(`nurysium/script/configs/{game.GameId}.txt`, config)
 end
 
 function UI.load_config()
-	if not isfile(`nurysium/script/configs/{game.PlaceId}.txt`) then
+	if not isfile(`nurysium/script/configs/{game.GameId}.txt`) then
         warn('FILE IS NULL')
 
 		UI.save_config()
@@ -55,7 +55,7 @@ function UI.load_config()
 		return
 	end
 
-	local config_file = readfile(`nurysium/script/configs/{game.PlaceId}.txt`)
+	local config_file = readfile(`nurysium/script/configs/{game.GameId}.txt`)
 
 	UI.config = HttpService:JSONDecode(config_file)
 end
@@ -104,7 +104,7 @@ function ui_open_close(self, input_state)
 	UI.is_open = not UI.is_open
 
 	if UI.is_open then
-		animate_sections(1.1)
+		animate_sections(2)
 
 		if not UI.currect_category then
 			return
