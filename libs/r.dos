@@ -149,9 +149,9 @@ function UI:__init()
 	local UIListLayout_3 = Instance.new("UIListLayout")
 	local UIScale = Instance.new("UIScale", UI.background)
 
-	clickgUI.Name = "clickgui"
-	clickgUI.Parent = self.parent
-	clickgUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	clickgui.Name = "clickgui"
+	clickgui.Parent = self.parent
+	clickgui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 	UI.background.Name = "background"
 	UI.background.Parent = clickgui
