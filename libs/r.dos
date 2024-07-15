@@ -413,7 +413,7 @@ function UI:create_section()
 	UIListLayout.Parent = example
 	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 	UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-	UIListLayout.Padding = UDim.new(0, 4)
+	UIListLayout.Padding = UDim.new(0, -2)
 
 	UIPadding.Parent = example
 	UIPadding.PaddingLeft = UDim.new(0.0450000018, 0)
