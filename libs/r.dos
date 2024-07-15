@@ -417,6 +417,9 @@ function UI:create_section()
 	UIPadding.PaddingLeft = UDim.new(0.0450000018, 0)
 	
 	RunService:BindToRenderStep('section updater', 100, function()
+		warn(self.category)
+		print(UI.currect_category)
+
 		example.Visible = self.category == UI.currect_category
 	end)
 end
