@@ -43,11 +43,11 @@ function UI.save_config()
 
 	local config = HttpService:JSONEncode(UI.config)
 
-	writefile('Nury/script/configs/default.txt', config)
+	writefile(`Nury/script/configs/{game.PlaceId}.txt`, config)
 end
 
 function UI.load_config()
-	if not isfile('Nury/script/configs/default.txt') then
+	if not isfile(`Nury/script/configs/{game.PlaceId}.txt`) then
         warn('FILE IS NULL')
 
 		UI.save_config()
@@ -55,7 +55,7 @@ function UI.load_config()
 		return
 	end
 
-	local config_file = readfile('Nury/script/configs/default.txt')
+	local config_file = readfile(`Nury/script/configs/{game.PlaceId}.txt`)
 
 	UI.config = HttpService:JSONDecode(config_file)
 end
