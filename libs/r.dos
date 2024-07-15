@@ -66,14 +66,14 @@ UI.load_config()
 function UI:get_screen_scale()
 	local viewport_size_x = workspace.CurrentCamera.ViewportSize.X
 	local viewport_size_y = workspace.CurrentCamera.ViewportSize.Y
-	local screen_size = (viewport_size_x + viewport_size_y) / 4500
+	local screen_size = (viewport_size_x + viewport_size_y) / 4100
 
 	UI.UI_scale = screen_size + math.max(0.85 - screen_size, 0)
 end
 
 local function animate_functions(speed: number)
-	UI.background.left.UIListLayout.Padding = UDim.new(0, 300)
-	UI.background.right.UIListLayout.Padding = UDim.new(0, 300)
+	UI.background.left.UIListLayout.Padding = UDim.new(0, 500)
+	UI.background.right.UIListLayout.Padding = UDim.new(0, 500)
 
 	TweenService:Create(UI.background.left.UIListLayout, TweenInfo.new(speed, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
 		Padding = UDim.new(0, 10)
@@ -110,7 +110,7 @@ function ui_open_close(self, input_state)
 			return
 		end
 
-		animate_functions(0.65)
+		animate_functions(2.65)
 	end
 end
 
@@ -295,7 +295,7 @@ function UI:create_category()
 	end
 
 	category.TouchTap:Connect(function()
-		animate_functions(0.65)
+		animate_functions(2.65)
 
 		UI.currect_category = self.name
 
@@ -313,7 +313,7 @@ function UI:create_category()
 	end)
 
 	category.MouseButton1Up:Connect(function()
-		animate_functions(0.65)
+		animate_functions(2.65)
 
 		UI.currect_category = self.name
 
