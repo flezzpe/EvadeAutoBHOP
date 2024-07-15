@@ -295,7 +295,7 @@ function UI:create_category()
 	end
 
 	category.TouchTap:Connect(function()
-		animate_functions(2.65)
+		animate_functions(1.45)
 
 		UI.currect_category = self.name
 
@@ -313,7 +313,7 @@ function UI:create_category()
 	end)
 
 	category.MouseButton1Up:Connect(function()
-		animate_functions(2.65)
+		animate_functions(1.45)
 
 		UI.currect_category = self.name
 
