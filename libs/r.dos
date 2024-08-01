@@ -337,6 +337,28 @@ function UI:create_category()
 			}):Play()
 		end)
 	end)
+
+	category.TouchTap:Connect(function()
+		if UI.currect_category == self.name then
+			return
+		end
+
+		animate_functions(1.25)
+
+		UI.currect_category = self.name
+
+		TweenService:Create(UI.background.section_name, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
+			TextTransparency = 1
+		}):Play()
+
+		task.delay(0.5, function()
+			UI.background.section_name.Text = category.Name
+			
+			TweenService:Create(UI.background.section_name, TweenInfo.new(0.65, Enum.EasingStyle.Exponential), {
+				TextTransparency = 0
+			}):Play()
+		end)
+	end)
 	
 	RunService:BindToRenderStep('ui update', 100, function()
 		if not UI.currect_category then
@@ -516,6 +538,71 @@ function UI:create_toggle(callback)
     end
 	
 	toggle_hitbox.MouseButton1Up:Connect(function()
+		is_enabled = not is_enabled
+		callback(is_enabled)
+
+		if is_enabled then
+			table.insert(UI.config, self.ID)
+
+			TweenService:Create(UIScale, TweenInfo.new(0.3, Enum.EasingStyle.Exponential), {
+				Scale = 0
+			}):Play()
+			
+			TweenService:Create(example, TweenInfo.new(0.3, Enum.EasingStyle.Exponential), {
+				ImageTransparency = 1
+			}):Play()
+			
+			task.delay(0.3, function()
+				example.Image = "rbxassetid://18497538632"
+				
+				TweenService:Create(UIScale, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
+					Scale = 1.25
+				}):Play()
+				
+				TweenService:Create(example, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
+					ImageTransparency = 0
+				}):Play()
+				
+				TweenService:Create(toggle_frame, TweenInfo.new(0.65, Enum.EasingStyle.Exponential), {
+					BackgroundColor3 = Color3.fromRGB(114, 134, 200)
+				}):Play()
+			end)
+		else
+			for index, element in UI.config do
+                if element == self.ID then
+                    table.remove(UI.config, index)
+                end
+            end
+
+			TweenService:Create(UIScale, TweenInfo.new(0.3, Enum.EasingStyle.Exponential), {
+				Scale = 0,
+			}):Play()
+			
+			TweenService:Create(example, TweenInfo.new(0.3, Enum.EasingStyle.Exponential), {
+				ImageTransparency = 1
+			}):Play()
+			
+			task.delay(0.3, function()
+				example.Image = "rbxassetid://18497520940"
+				
+				TweenService:Create(UIScale, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
+					Scale = 0.8
+				}):Play()
+				
+				TweenService:Create(example, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
+					ImageTransparency = 0.45
+				}):Play()
+				
+				TweenService:Create(toggle_frame, TweenInfo.new(0.65, Enum.EasingStyle.Exponential), {
+					BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+				}):Play()
+			end)
+		end
+
+		UI.save_config()
+	end)
+
+	toggle_hitbox.TouchTap:Connect(function()
 		is_enabled = not is_enabled
 		callback(is_enabled)
 
