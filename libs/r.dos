@@ -85,7 +85,22 @@ local function animate_functions(speed: number)
 end
 
 local function animate_sections(speed: number)
+	task.defer(function()
+		for _, image in UI.background.categorys:GetChlidren() do
+			if not image:IsA('ImageButton') then
+				continue
+			end
+
+			image.ImageTransparency = 1
+
+			TweenService:Create(image, TweenInfo.new(speed + 1, Enum.EasingStyle.Back, Enum.EasingDirection.InOut), {
+				ImageTransparency = 0.650
+			}):Play()
+		end
+	end)
+
 	UI.background.categorys.UIListLayout.Padding = UDim.new(-1, 0)
+
 
 	TweenService:Create(UI.background.categorys.UIListLayout, TweenInfo.new(speed, Enum.EasingStyle.Back, Enum.EasingDirection.InOut), {
 		Padding = UDim.new(0.05, 0)
