@@ -1,5 +1,5 @@
 repeat
-	task.wait()
+	task.wait(1)
 until game:IsLoaded()
 
 local ContextActionService = game:GetService('ContextActionService')
@@ -66,7 +66,7 @@ UI.load_config()
 function UI:get_screen_scale()
 	local viewport_size_x = workspace.CurrentCamera.ViewportSize.X
 	local viewport_size_y = workspace.CurrentCamera.ViewportSize.Y
-	local screen_size = (viewport_size_x + viewport_size_y) / 4100
+	local screen_size = (viewport_size_x + viewport_size_y) / 6000
 
 	UI.UI_scale = screen_size + math.max(0.85 - screen_size, 0)
 end
