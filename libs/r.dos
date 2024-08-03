@@ -86,7 +86,7 @@ end
 
 local function animate_sections(speed: number)
 	task.defer(function()
-		for _, image in UI.background.categorys:GetChlidren() do
+		for _, image in UI.background.categorys:GetChildren() do
 			if not image:IsA('ImageButton') then
 				continue
 			end
