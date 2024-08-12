@@ -70,7 +70,7 @@ function UI:get_screen_scale()
 	local screen_size = (viewport_size_x + viewport_size_y) / 5200
 
 	if not have_keyboard then
-		screen_size = (viewport_size_x + viewport_size_y) / 6100
+		screen_size = (viewport_size_x + viewport_size_y) / 8500
 	end
 
 	UI.UI_scale = screen_size + math.max(0.85 - screen_size, 0)
