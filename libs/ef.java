@@ -1300,6 +1300,10 @@ function nurysium_ui:create_slider()
 	end)
 end
 
+function nurysium_ui.ui_is_valid()
+	return nurysium_ui.user_gui:FindFirstChild('background')
+end
+
 function nurysium_ui:get_toggle_value()
 	if not ui.toggles[self.flag] then
 		return
