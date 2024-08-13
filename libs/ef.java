@@ -106,7 +106,7 @@ function animate_sections(speed: number)
 			uiscale.Scale = 0
 
 			TweenService:Create(uiscale, TweenInfo.new(speed / 2, Enum.EasingStyle.Back, Enum.EasingDirection.InOut), {
-				Scale = 0.85
+				Scale = 0.91
 			}):Play()
 		end
 	end)
@@ -124,7 +124,7 @@ function animate_sections(speed: number)
 			uiscale.Scale = 0
 
 			TweenService:Create(uiscale, TweenInfo.new(speed / 1.5, Enum.EasingStyle.Back, Enum.EasingDirection.InOut), {
-				Scale = 0.85
+				Scale = 0.91
 			}):Play()
 		end
 	end)
