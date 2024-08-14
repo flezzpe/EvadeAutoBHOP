@@ -559,7 +559,7 @@ function nurysium_ui:create_category()
 	end)
 
 	local connection
-	connection = RunService.RenderStepped:Connect(function()
+	connection = RunService.Heartbeat:Connect(function()
 		if not nurysium_ui.user_gui:FindFirstChild('background') then
 			connection:Disconnect()
 
