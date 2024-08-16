@@ -558,11 +558,11 @@ function nurysium_ui:create_category()
 		ui.currect_category = self.name
 	end)
 
-	local connection
-	connection = RunService.Heartbeat:Connect(function()
-		if nurysium_ui.user_gui.background == nil then
-			connection:Disconnect()
-			warn('tonka')
+	while task.wait() do
+		local background = nurysium_ui.user_gui.background
+		
+		if not background then
+			break;
 
             		return
 		end
@@ -584,7 +584,7 @@ function nurysium_ui:create_category()
 			BackgroundTransparency = (self.name == ui.currect_category and 0 or 1),
 			BackgroundColor3 = (self.name == ui.currect_category and Color3.fromRGB(55, 97, 189) or Color3.fromRGB(167, 167, 167))
 		}):Play()
-	end)
+	end
 end
 
 function nurysium_ui:create_section()
