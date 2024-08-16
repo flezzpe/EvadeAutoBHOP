@@ -103,7 +103,7 @@ function animate_sections(speed: number)
 				continue
 			end
 
-			uiscale.Scale = 0
+			UIScale.Scale = 0.01
 
 			TweenService:Create(uiscale, TweenInfo.new(speed / 2, Enum.EasingStyle.Back, Enum.EasingDirection.InOut), {
 				Scale = 0.91
@@ -121,7 +121,7 @@ function animate_sections(speed: number)
 				continue
 			end
 		
-			uiscale.Scale = 0
+			UIScale.Scale = 0.01
 
 			TweenService:Create(uiscale, TweenInfo.new(speed / 1.5, Enum.EasingStyle.Back, Enum.EasingDirection.InOut), {
 				Scale = 0.91
@@ -462,7 +462,7 @@ function nurysium_ui:__initializate()
 	UIListLayout_3.Padding = UDim.new(0, 30)
 
 	UIScale.Parent = background
-	UIScale.Scale = 0
+	UIScale.Scale = 0.01
 end
 
 function nurysium_ui:create_category()
@@ -729,7 +729,7 @@ function nurysium_ui:create_toggle()
 	example_2.ImageTransparency = 0.450
 
 	UIScale.Parent = example_2
-	UIScale.Scale = 0.800
+	UIScale.Scale = 0.01.800
 	
 	if self.value == true then
 		TweenService:Create(UIScale, TweenInfo.new(0.3, Enum.EasingStyle.Exponential), {
@@ -932,7 +932,7 @@ function nurysium_ui:create_dropdown()
 	dropdown_frame.ScrollBarThickness = 0
 	dropdown_frame.LayoutOrder = self.layout_order
 
-	UIScale.Scale = 0
+	UIScale.Scale = 0.01
 	UIScale.Parent = dropdown_frame
 
 	UIListLayout.Parent = dropdown_frame
