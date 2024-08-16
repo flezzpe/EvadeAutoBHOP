@@ -557,34 +557,6 @@ function nurysium_ui:create_category()
 
 		ui.currect_category = self.name
 	end)
-
-	while task.wait() do
-		local background = nurysium_ui.user_gui.background
-		
-		if not background then
-			break;
-
-            		return
-		end
-
-		TweenService:Create(icon, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
-			ImageColor3 = (self.name == ui.currect_category and Color3.fromRGB(55, 97, 189) or Color3.fromRGB(255, 248, 247)),
-			ImageTransparency = (self.name == ui.currect_category and 0 or 0.65)
-		}):Play()
-	
-		TweenService:Create(Example, TweenInfo.new(2, Enum.EasingStyle.Exponential), {
-			TextTransparency = (self.name == ui.currect_category and 0.1 or 0.45)
-		}):Play()
-		
-		TweenService:Create(noise_shader, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {
-			ImageTransparency = (self.name == ui.currect_category and 0.314 or 1)
-		}):Play()
-		
-		TweenService:Create(hover, TweenInfo.new(1, Enum.EasingStyle.Exponential), {
-			BackgroundTransparency = (self.name == ui.currect_category and 0 or 1),
-			BackgroundColor3 = (self.name == ui.currect_category and Color3.fromRGB(55, 97, 189) or Color3.fromRGB(167, 167, 167))
-		}):Play()
-	end
 end
 
 function nurysium_ui:create_section()
