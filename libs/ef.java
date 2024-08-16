@@ -43,7 +43,7 @@ function ui:set_screen_scale()
 	local screen_size = (viewport_size_x + viewport_size_y) / 3100
 
 	if not ui.have_keyboard then
-		screen_size = (viewport_size_x + viewport_size_y) / 10000
+		screen_size = (viewport_size_x + viewport_size_y) / 4000
 	end
 
 	ui.UI_scale = screen_size + math.max(0.65 - screen_size, 0)
