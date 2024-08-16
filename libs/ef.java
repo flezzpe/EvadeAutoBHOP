@@ -43,7 +43,7 @@ function ui:set_screen_scale()
 	local screen_size = (viewport_size_x + viewport_size_y) / 3100
 
 	if not ui.have_keyboard then
-		screen_size = (viewport_size_x + viewport_size_y) / 4000
+		screen_size = (viewport_size_x + viewport_size_y) / 10000
 	end
 
 	ui.UI_scale = screen_size + math.max(0.65 - screen_size, 0)
@@ -103,7 +103,7 @@ function animate_sections(speed: number)
 				continue
 			end
 
-			UIScale.Scale = 0.01
+			uiscale.Scale = 0
 
 			TweenService:Create(uiscale, TweenInfo.new(speed / 2, Enum.EasingStyle.Back, Enum.EasingDirection.InOut), {
 				Scale = 0.91
@@ -121,7 +121,7 @@ function animate_sections(speed: number)
 				continue
 			end
 		
-			UIScale.Scale = 0.01
+			uiscale.Scale = 0
 
 			TweenService:Create(uiscale, TweenInfo.new(speed / 1.5, Enum.EasingStyle.Back, Enum.EasingDirection.InOut), {
 				Scale = 0.91
@@ -462,7 +462,7 @@ function nurysium_ui:__initializate()
 	UIListLayout_3.Padding = UDim.new(0, 30)
 
 	UIScale.Parent = background
-	UIScale.Scale = 0.01
+	UIScale.Scale = 0
 end
 
 function nurysium_ui:create_category()
@@ -537,7 +537,7 @@ function nurysium_ui:create_category()
 
 	UICorner_2.CornerRadius = UDim.new(0, 15)
 	UICorner_2.Parent = noise_shader
-
+	
 	Example.MouseButton1Up:Connect(function()
 		if ui.currect_category == self.name then
 			return
@@ -556,6 +556,54 @@ function nurysium_ui:create_category()
 		animate_sections(1.7)
 
 		ui.currect_category = self.name
+	end)
+
+	local connection
+	connection = RunService.Heartbeat:Connect(function()
+		if not nurysium_ui.user_gui:FindFirstChild('background') then
+			connection:Disconnect()
+
+            return
+		end
+
+		if self.name == ui.currect_category then
+			-- Исполнение твинов только если это необходимо
+			TweenService:Create(icon, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
+				ImageColor3 = Color3.fromRGB(55, 97, 189),
+				ImageTransparency = 0
+			}):Play()
+			
+			TweenService:Create(Example, TweenInfo.new(2, Enum.EasingStyle.Exponential), {
+				TextTransparency = 0.1
+			}):Play()
+			
+			TweenService:Create(noise_shader, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {
+				ImageTransparency = 0.314
+			}):Play()
+			
+			TweenService:Create(hover, TweenInfo.new(1, Enum.EasingStyle.Exponential), {
+				BackgroundTransparency = 0,
+				BackgroundColor3 = Color3.fromRGB(55, 97, 189)
+			}):Play()
+		else
+			TweenService:Create(icon, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
+				ImageColor3 = Color3.fromRGB(255, 248, 247),
+				ImageTransparency = 0.65
+			}):Play()
+			
+			TweenService:Create(Example, TweenInfo.new(2, Enum.EasingStyle.Exponential), {
+				TextTransparency = 0.45
+			}):Play()
+			
+			TweenService:Create(noise_shader, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {
+				ImageTransparency = 1
+			}):Play()
+			
+			TweenService:Create(hover, TweenInfo.new(1, Enum.EasingStyle.Exponential), {
+				BackgroundTransparency = 1,
+				BackgroundColor3 = Color3.fromRGB(167, 167, 167)
+			}):Play()
+		end
 	end)
 end
 
@@ -701,7 +749,7 @@ function nurysium_ui:create_toggle()
 	example_2.ImageTransparency = 0.450
 
 	UIScale.Parent = example_2
-	UIScale.Scale = 0.01.800
+	UIScale.Scale = 0.800
 	
 	if self.value == true then
 		TweenService:Create(UIScale, TweenInfo.new(0.3, Enum.EasingStyle.Exponential), {
@@ -904,7 +952,7 @@ function nurysium_ui:create_dropdown()
 	dropdown_frame.ScrollBarThickness = 0
 	dropdown_frame.LayoutOrder = self.layout_order
 
-	UIScale.Scale = 0.01
+	UIScale.Scale = 0
 	UIScale.Parent = dropdown_frame
 
 	UIListLayout.Parent = dropdown_frame
