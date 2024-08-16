@@ -537,53 +537,6 @@ function nurysium_ui:create_category()
 
 	UICorner_2.CornerRadius = UDim.new(0, 15)
 	UICorner_2.Parent = noise_shader
-	
-	Example.MouseButton1Up:Connect(function()
-		if ui.currect_category == self.name then
-			return
-		end
-		
-		animate_sections(1.7)
-
-		ui.currect_category = self.name
-	end)
-
-	Example.TouchTap:Connect(function()
-		if ui.currect_category == self.name then
-			return
-		end
-
-		animate_sections(1.7)
-
-		ui.currect_category = self.name
-	end)
-
-	local connection
-	connection = RunService.Heartbeat:Connect(function()
-		if not nurysium_ui.user_gui:FindFirstChild('background') then
-			connection:Disconnect()
-
-            return
-		end
-
-		TweenService:Create(icon, TweenInfo.new(0.45, Enum.EasingStyle.Exponential), {
-			ImageColor3 = (self.name == ui.currect_category and Color3.fromRGB(55, 97, 189) or Color3.fromRGB(255, 248, 247)),
-			ImageTransparency = (self.name == ui.currect_category and 0 or 0.65)
-		}):Play()
-	
-		TweenService:Create(Example, TweenInfo.new(2, Enum.EasingStyle.Exponential), {
-			TextTransparency = (self.name == ui.currect_category and 0.1 or 0.45)
-		}):Play()
-		
-		TweenService:Create(noise_shader, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {
-			ImageTransparency = (self.name == ui.currect_category and 0.314 or 1)
-		}):Play()
-		
-		TweenService:Create(hover, TweenInfo.new(1, Enum.EasingStyle.Exponential), {
-			BackgroundTransparency = (self.name == ui.currect_category and 0 or 1),
-			BackgroundColor3 = (self.name == ui.currect_category and Color3.fromRGB(55, 97, 189) or Color3.fromRGB(167, 167, 167))
-		}):Play()
-	end)
 end
 
 function nurysium_ui:create_section()
