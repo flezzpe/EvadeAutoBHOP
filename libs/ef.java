@@ -241,11 +241,7 @@ function nurysium_ui:__initializate()
 	user_gui.Name = "nurysium"
 	user_gui.Parent = self.parent
 
-	task.defer(function()
-		if ui.have_keyboard then
-			return
-		end
-		   
+	task.defer(function()	   
 		local mobile_button = Instance.new("Frame")
 		local UICorner = Instance.new("UICorner")
 		local UIGradient = Instance.new("UIGradient")
@@ -254,6 +250,7 @@ function nurysium_ui:__initializate()
 
 		mobile_button.Name = "mobile_button"
 		mobile_button.Parent = user_gui
+		mobile_button.Visible = not ui.have_keyboard
 		mobile_button.AnchorPoint = Vector2.new(0.5, 0.5)
 		mobile_button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 		mobile_button.BorderColor3 = Color3.fromRGB(0, 0, 0)
