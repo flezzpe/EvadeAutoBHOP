@@ -242,6 +242,10 @@ function nurysium_ui:__initializate()
 	user_gui.Parent = self.parent
 
 	task.defer(function()
+		if ui.have_keyboard then
+			return
+		end
+		   
 		local mobile_button = Instance.new("Frame")
 		local UICorner = Instance.new("UICorner")
 		local UIGradient = Instance.new("UIGradient")
