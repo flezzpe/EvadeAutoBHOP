@@ -22,6 +22,7 @@ ui.UI_scale = 0
 ui.open = false
 ui.have_keyboard = UserInputService.KeyboardEnabled
 ui.currect_category = nil
+ui.wave_user = string.find(tostring(getexecutorname()):lower(), 'wave')
 
 --// flags
 
@@ -250,7 +251,7 @@ function nurysium_ui:__initializate()
 
 		mobile_button.Name = "mobile_button"
 		mobile_button.Parent = user_gui
-		mobile_button.Visible = not ui.have_keyboard
+		mobile_button.Visible = (not ui.have_keyboard or ui.wave_user)
 		mobile_button.AnchorPoint = Vector2.new(0.5, 0.5)
 		mobile_button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 		mobile_button.BorderColor3 = Color3.fromRGB(0, 0, 0)
