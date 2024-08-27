@@ -22,6 +22,8 @@ ui.UI_scale = 0
 ui.open = false
 ui.have_keyboard = UserInputService.KeyboardEnabled
 ui.currect_category = nil
+
+local is_mobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, UserInputService:GetPlatform())
 	
 --// flags
 
@@ -42,7 +44,7 @@ function ui:set_screen_scale()
 	
 	local screen_size = (viewport_size_x + viewport_size_y) / 3100
 
-	if not ui.have_keyboard then
+	if is_mobile then
 		screen_size = (viewport_size_x + viewport_size_y) / 10000
 	end
 
@@ -250,7 +252,7 @@ function nurysium_ui:__initializate()
 
 		mobile_button.Name = "mobile_button"
 		mobile_button.Parent = user_gui
-		mobile_button.Visible = not ui.have_keyboard
+		mobile_button.Visible = is_mobile
 		mobile_button.AnchorPoint = Vector2.new(0.5, 0.5)
 		mobile_button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 		mobile_button.BorderColor3 = Color3.fromRGB(0, 0, 0)
