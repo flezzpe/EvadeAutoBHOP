@@ -19,7 +19,7 @@ local nurysium_ui = {
 local ui = {}
 
 ui.UI_scale = 0
-ui.open = false
+ui.open = true
 ui.have_keyboard = UserInputService.KeyboardEnabled
 ui.currect_category = nil
 
