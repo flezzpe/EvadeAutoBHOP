@@ -45,13 +45,13 @@ function ConfigsController.save(file_name: string, config: any)
 	if not isfolder(`Nurysium`) then
 		makefolder(`Nurysium`)
 	end
-	
+
 	if not isfolder(`Nurysium/configs`) then
 		makefolder(`Nurysium/configs`)
 	end
 
 	local flags = HttpService:JSONEncode(config)
-	
+
 	writefile(`Nurysium/configs/{file_name}.json`, flags)
 end
 
@@ -361,7 +361,7 @@ function Library:create()
 		if Library.disconnected then
 			return
 		end
-		
+
 		TweenService:Create(DisconnectIcon, TweenInfo.new(0.45, Enum.EasingStyle.Back, Enum.EasingDirection.InOut), {
 			ImageTransparency = 1,
 			Rotation = 180
@@ -374,30 +374,30 @@ function Library:create()
 		end
 
 		Library.disconnected = true
-		
+
 		TweenService:Create(DisconnectIcon, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
 			ImageTransparency = 1,
 			Rotation = 90
 		}):Play()
-		
+
 		task.delay(0.35, function()
 			DisconnectIcon.Image = 'rbxassetid://121830702067948'
-			
+
 			TweenService:Create(DisconnectIcon, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.InOut), {
 				ImageTransparency = 0.8,
 				Rotation = 360
 			}):Play()
 		end)
-	
+
 		TweenService:Create(DisconnectIcon_UIScale, TweenInfo.new(0.25, Enum.EasingStyle.Back, Enum.EasingDirection.InOut), {
 			Scale = 1.5
 		}):Play()
-		
+
 		task.delay(2, function()
 			TweenService:Create(DisconnectIcon_UIScale, TweenInfo.new(0.45, Enum.EasingStyle.Back, Enum.EasingDirection.InOut), {
 				Scale = 0.5
 			}):Play()
-			
+
 			TweenService:Create(DisconnectIcon, TweenInfo.new(0.45, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
 				ImageTransparency = 1,
 				Rotation = 180
@@ -550,9 +550,9 @@ function Library:create()
 			local Tab = Instance.new("TextButton")
 			local Title = Instance.new("TextLabel")
 			local UICorner_2 = Instance.new("UICorner")
-			
+
 			local AutomaticSize_fixer = Instance.new('Frame')
-			
+
 			Module.Name = "Module"
 			Module.Parent = (self.side == 'right' and Right or Left)
 			Module.Active = true
@@ -627,12 +627,12 @@ function Library:create()
 
 			UIPadding.Parent = Settings
 			UIPadding.PaddingTop = UDim.new(0, 31)
-			
+
 			AutomaticSize_fixer.Parent = Settings
 			AutomaticSize_fixer.LayoutOrder = 2147483647
 			AutomaticSize_fixer.Size = UDim2.new(0, 0, 0, 0)
 			AutomaticSize_fixer.BackgroundTransparency = 1
-			
+
 			local function update_module(switch: boolean)
 				if switch then
 					Library.flags[self.flag] = not Library.flags[self.flag]
@@ -642,7 +642,7 @@ function Library:create()
 					TweenService:Create(Tab, TweenInfo.new(1.2, Enum.EasingStyle.Exponential), {
 						BackgroundColor3 = Color3.fromRGB(51, 51, 51)
 					}):Play()
-					
+
 					TweenService:Create(Title, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {
 						TextTransparency = 0
 					}):Play()
@@ -650,7 +650,7 @@ function Library:create()
 					TweenService:Create(Tab, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {
 						BackgroundColor3 = Color3.fromRGB(18, 17, 17)
 					}):Play()
-					
+
 					TweenService:Create(Title, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {
 						TextTransparency = 0.7
 					}):Play()
@@ -665,19 +665,19 @@ function Library:create()
 
 			Tab.MouseButton1Click:Connect(function()
 				update_module(true)
-				
+
 				ConfigsController.save(game.GameId, Library.flags)
 			end)
-			
+
 			local SettingsController = {}
-			
+
 			function SettingsController:create_toggle()
 				local Toggle = Instance.new("TextButton")
 				local Title = Instance.new("TextLabel")
 				local UICorner = Instance.new("UICorner")
 				local ToggleFrame = Instance.new("Frame")
 				local UICorner_2 = Instance.new("UICorner")
-				
+
 				Toggle.Name = "Toggle"
 				Toggle.Parent = Settings
 				Toggle.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
@@ -726,12 +726,12 @@ function Library:create()
 
 				UICorner_2.CornerRadius = UDim.new(0, 6)
 				UICorner_2.Parent = ToggleFrame
-				
+
 				local function update_toggle(switch: boolean)
 					if switch then
 						Library.flags[self.flag] = not Library.flags[self.flag]
 					end
-					
+
 					if Library.flags[self.flag] then
 						TweenService:Create(Title, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {
 							TextTransparency = 0
@@ -760,20 +760,20 @@ function Library:create()
 						}):Play()
 					end
 				end
-				
+
 				if not Library.flags[self.flag] then
 					Library.flags[self.flag] = false
 				else
 					update_toggle(false)
 				end
-				
+
 				Toggle.MouseButton1Click:Connect(function()
 					update_toggle(true)
-					
+
 					ConfigsController.save(game.GameId, Library.flags)
 				end)
 			end
-			
+
 			function SettingsController:create_slider()
 				local Slider = Instance.new("Frame")
 				local UICorner = Instance.new("UICorner")
@@ -808,7 +808,7 @@ function Library:create()
 				Value.TextScaled = false
 				Value.TextSize = 8.000
 				Value.TextWrapped = true
-				
+
 				Hitbox.Name = "Hitbox"
 				Hitbox.Parent = Slider
 				Hitbox.Active = false
@@ -832,9 +832,9 @@ function Library:create()
 
 				UICorner_2.CornerRadius = UDim.new(0, 6)
 				UICorner_2.Parent = Dragger
-				
+
 				local Title = Instance.new("TextLabel")
-				
+
 				Title.Name = "Title"
 				Title.Parent = Settings
 				Title.BackgroundColor3 = Color3.fromRGB(13, 13, 13)
@@ -851,42 +851,42 @@ function Library:create()
 				Title.TextSize = 12.000
 				Title.TextTransparency = 0.660
 				Title.TextWrapped = true
-				
+
 				if not Library.flags[self.flag] then
 					Library.flags[self.flag] = self.value
 				else
 					Value.Text = Library.flags[self.flag]
 					Dragger.Size = UDim2.new(Library.flags[self.flag] / 100, 0, 0, 10)
 				end
-				
+
 				local function update_slider()
 					local output = math.clamp((mouse.X - Slider.AbsolutePosition.X) / Slider.AbsoluteSize.X, 0, 1)
 					local value = math.round(output * 100)
-					
+
 					Library.flags[self.flag] = value
 					Value.Text = math.round(output * 100)
 
 					TweenService:Create(Dragger, TweenInfo.new(1, Enum.EasingStyle.Exponential), {
 						Size = UDim2.new(output, 0, 0, 10)
 					}):Play()
-					
+
 					ConfigsController.save(game.GameId, Library.flags)
 				end
-				
+
 				local slider_active = false :: boolean
-				
+
 				local function activate_slider()
 					slider_active = true
-					
+
 					while slider_active do
 						update_slider()
-						
+
 						task.wait()
 					end
 				end
-				
+
 				Hitbox.MouseButton1Down:Connect(activate_slider)
-				
+
 				UserInputService.InputEnded:Connect(function(input)
 					if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 						slider_active = false
@@ -894,6 +894,133 @@ function Library:create()
 				end)
 			end
 			
+			function SettingsController:create_dropdown()
+				local Dropdown = Instance.new("Frame")
+				local UICorner = Instance.new("UICorner")
+				local ScrollingFrame = Instance.new("ScrollingFrame")
+				local UIListLayout = Instance.new("UIListLayout")
+				local UIPadding = Instance.new("UIPadding")
+				local Title_2 = Instance.new("TextLabel")
+
+				Dropdown.Name = "Dropdown"
+				Dropdown.Parent = Settings
+				Dropdown.BackgroundColor3 = Color3.fromRGB(13, 13, 13)
+				Dropdown.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				Dropdown.BorderSizePixel = 0
+				Dropdown.Position = UDim2.new(0.0588235296, 0, 0, 0)
+				Dropdown.Size = UDim2.new(0, 165, 0, 80)
+
+				UICorner.CornerRadius = UDim.new(0, 6)
+				UICorner.Parent = Dropdown
+
+				ScrollingFrame.Parent = Dropdown
+				ScrollingFrame.Active = true
+				ScrollingFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				ScrollingFrame.BackgroundTransparency = 1.000
+				ScrollingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				ScrollingFrame.BorderSizePixel = 0
+				ScrollingFrame.Size = UDim2.new(1, 0, 1, 0)
+				ScrollingFrame.ZIndex = 5
+				ScrollingFrame.ScrollBarImageColor3 = Color3.fromRGB(0, 0, 0)
+				ScrollingFrame.BottomImage = ""
+				ScrollingFrame.MidImage = ""
+				ScrollingFrame.ScrollBarThickness = 0
+				ScrollingFrame.TopImage = ""
+
+				UIListLayout.Parent = ScrollingFrame
+				UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+				UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+				UIListLayout.Padding = UDim.new(0, 6)
+
+				local selected_mod
+				
+				local current_flag = Library.flags[self.flag]
+
+				if not current_flag then
+					Library.flags[self.flag] = self.default_flag or nil
+					current_flag = Library.flags[self.flag]
+				end
+
+				for _, value in self.mods do
+					local Mode = Instance.new("TextButton")
+					local Title = Instance.new("TextLabel")
+					local UICorner_2 = Instance.new("UICorner")
+
+					Mode.Name = "Mode"
+					Mode.Parent = ScrollingFrame
+					Mode.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
+					Mode.BackgroundTransparency = 0.650
+					Mode.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					Mode.BorderSizePixel = 0
+					Mode.Size = UDim2.new(0, 144, 0, 22)
+					Mode.AutoButtonColor = false
+					Mode.Text = ""
+					Mode.TextColor3 = Color3.fromRGB(0, 0, 0)
+					Mode.TextSize = 1.000
+					Mode.TextTransparency = 1.000
+					Mode.TextWrapped = true
+
+					Title.Name = "Title"
+					Title.Parent = Mode
+					Title.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+					Title.BackgroundTransparency = 1.000
+					Title.Size = UDim2.new(0, 122, 0, 12)
+					Title.FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+					Title.Text = value
+					Title.Position = UDim2.new(0, 7, 0, 5)
+					Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+					Title.TextScaled = true
+					Title.TextSize = 14.000
+					Title.TextTransparency = 0.300
+					Title.TextWrapped = true
+					Title.TextXAlignment = Enum.TextXAlignment.Left
+
+					UICorner_2.CornerRadius = UDim.new(0, 6)
+					UICorner_2.Parent = Mode
+					
+					if current_flag == value then
+						selected_mod = Mode
+						
+						Mode.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+						Title.TextTransparency = 0
+					end
+
+					Mode.MouseButton1Click:Connect(function()
+						if selected_mod then
+							TweenService:Create(selected_mod, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {
+								BackgroundColor3 = Color3.fromRGB(24, 24, 24)
+							}):Play()
+						end
+
+						selected_mod = Mode
+						
+						TweenService:Create(Mode, TweenInfo.new(1.2, Enum.EasingStyle.Exponential), {
+							BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+						}):Play()
+						
+						Library.flags[self.flag] = value
+						ConfigsController.save(game.GameId, Library.flags)
+					end)
+				end
+
+				UIPadding.Parent = ScrollingFrame
+				UIPadding.PaddingTop = UDim.new(0, 10)
+
+				Title_2.Name = "Title"
+				Title_2.Parent = Settings
+				Title_2.BackgroundColor3 = Color3.fromRGB(13, 13, 13)
+				Title_2.BackgroundTransparency = 1.000
+				Title_2.Size = UDim2.new(0, 144, 0, 8)
+				Title_2.ZIndex = 2
+				Title_2.FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+				Title_2.Text = self.title
+				Title_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+				Title_2.TextScaled = true
+				Title_2.TextSize = 12.000
+				Title_2.TextTransparency = 0.660
+				Title_2.TextWrapped = true
+			end
+
 			return SettingsController
 		end
 
