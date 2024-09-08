@@ -76,10 +76,6 @@ end
 local current_config = ConfigsController.load(game.GameId, Library.flags)
 Library.flags = current_config
 
-for index, parse in Library.flags do
-	print(index, parse)
-end
-
 local UIManager = {}
 
 function UIManager.refresh_tabs(Tab: TextButton)
