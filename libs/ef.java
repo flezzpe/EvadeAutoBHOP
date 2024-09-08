@@ -147,7 +147,7 @@ function Library:get_screen_scale()
 	local viewport_size_x = workspace.CurrentCamera.ViewportSize.X
 	local viewport_size_y = workspace.CurrentCamera.ViewportSize.Y
 
-	local screen_size = (viewport_size_x + viewport_size_y) / 3000
+	local screen_size = (viewport_size_x + viewport_size_y) / 2500
 
 	if Library.mobile then
 		screen_size = (viewport_size_x + viewport_size_y) / 7000
@@ -415,6 +415,53 @@ function Library:create()
 		end)
 	end)
 
+	Safemode.TouchTap:Connect(function()
+		if Library.disconnected then
+			return
+		end
+
+		Library.disconnected = true
+
+		TweenService:Create(DisconnectIcon, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+			ImageTransparency = 1,
+			Rotation = 90
+		}):Play()
+
+		task.delay(0.35, function()
+			DisconnectIcon.Image = 'rbxassetid://121830702067948'
+
+			TweenService:Create(DisconnectIcon, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.InOut), {
+				ImageTransparency = 0.8,
+				Rotation = 360
+			}):Play()
+		end)
+
+		TweenService:Create(DisconnectIcon_UIScale, TweenInfo.new(0.25, Enum.EasingStyle.Back, Enum.EasingDirection.InOut), {
+			Scale = 1.5
+		}):Play()
+
+		task.delay(2, function()
+			TweenService:Create(DisconnectIcon_UIScale, TweenInfo.new(0.45, Enum.EasingStyle.Back, Enum.EasingDirection.InOut), {
+				Scale = 0.5
+			}):Play()
+
+			TweenService:Create(DisconnectIcon, TweenInfo.new(0.45, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut), {
+				ImageTransparency = 1,
+				Rotation = 180
+			}):Play()
+		end)
+
+		task.delay(2, function()
+			Library.open = not Library.open
+			Library.normalize_size()
+
+			task.delay(1, function()
+				Debris:AddItem(Nurysium, 0)
+				Connections.abadone()
+			end)
+		end)
+	end)
+
 	Library.changed(function()
 		table.clear(Library.flags)
 		Connections.abadone()
@@ -510,6 +557,19 @@ function Library:create()
 			UIManager.refresh_sections(Right, Left)
 			UIManager.animate_sections(Right, Left)
 		end)
+
+		Tab.TouchTap:Connect(function()
+			if Library.current_tab == Tab.Name then
+				return
+			end
+
+			Library.current_tab = Tab.Name
+
+			UIManager.refresh_tabs(Tab)
+			UIManager.refresh_sections(Right, Left)
+			UIManager.animate_sections(Right, Left)
+		end)
+
 
 		Title.Name = "Title"
 		Title.Parent = Tab
@@ -669,6 +729,12 @@ function Library:create()
 				ConfigsController.save(game.GameId, Library.flags)
 			end)
 
+			Tab.TouchTap:Connect(function()
+				update_module(true)
+
+				ConfigsController.save(game.GameId, Library.flags)
+			end)
+
 			local SettingsController = {}
 
 			function SettingsController:create_toggle()
@@ -768,6 +834,12 @@ function Library:create()
 				end
 
 				Toggle.MouseButton1Click:Connect(function()
+					update_toggle(true)
+
+					ConfigsController.save(game.GameId, Library.flags)
+				end)
+
+				Toggle.TouchTap:Connect(function()
 					update_toggle(true)
 
 					ConfigsController.save(game.GameId, Library.flags)
@@ -886,6 +958,7 @@ function Library:create()
 				end
 
 				Hitbox.MouseButton1Down:Connect(activate_slider)
+				Hitbox.TouchLongPress:Connect(activate_slider)
 
 				UserInputService.InputEnded:Connect(function(input)
 					if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
@@ -986,6 +1059,23 @@ function Library:create()
 					end
 
 					Mode.MouseButton1Click:Connect(function()
+						if selected_mod then
+							TweenService:Create(selected_mod, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {
+								BackgroundColor3 = Color3.fromRGB(24, 24, 24)
+							}):Play()
+						end
+
+						selected_mod = Mode
+						
+						TweenService:Create(Mode, TweenInfo.new(1.2, Enum.EasingStyle.Exponential), {
+							BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+						}):Play()
+						
+						Library.flags[self.flag] = value
+						ConfigsController.save(game.GameId, Library.flags)
+					end)
+
+					Mode.TouchTap:Connect(function()
 						if selected_mod then
 							TweenService:Create(selected_mod, TweenInfo.new(0.4, Enum.EasingStyle.Exponential), {
 								BackgroundColor3 = Color3.fromRGB(24, 24, 24)
