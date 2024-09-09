@@ -1055,7 +1055,6 @@ function Library:create()
 						selected_mod = Mode
 						
 						Mode.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-						Title.TextTransparency = 0
 					end
 
 					Mode.MouseButton1Click:Connect(function()
