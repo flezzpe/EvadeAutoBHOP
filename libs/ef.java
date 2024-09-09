@@ -147,7 +147,7 @@ function Library:get_screen_scale()
 	local viewport_size_x = workspace.CurrentCamera.ViewportSize.X
 	local viewport_size_y = workspace.CurrentCamera.ViewportSize.Y
 
-	local screen_size = (viewport_size_x + viewport_size_y) / 2000
+	local screen_size = (viewport_size_x + viewport_size_y) / 2200
 
 	if Library.mobile then
 		screen_size = (viewport_size_x + viewport_size_y) / 7000
