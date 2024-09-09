@@ -35,7 +35,8 @@ local Library = {
 		Enum.Platform.IOS, 
 		Enum.Platform.Android
 	}, UserInputService:GetPlatform()),
-	disconnected = false :: boolean
+	disconnected = false :: boolean,
+	can_be_optimized = false :: boolean
 }
 
 
@@ -222,7 +223,9 @@ UserInputService.InputBegan:Connect(function(input: InputObject, event: boolean)
 		return
 	end
 
+	Library.can_be_optimized not Library.open
 	Library.open = not Library.open
+
 	Library.normalize_size()
 
 end)
@@ -240,6 +243,9 @@ function Library:create()
 	local UIScale = Instance.new("UIScale")
 	local Tabs = Instance.new("ScrollingFrame")
 	local UIListLayout = Instance.new("UIListLayout")
+
+	local optimized_folder = Instance.new('Folder', Nurysium)
+	optimized_folder.Name = 'Optimized'
 
 	local Sections_folder = Instance.new("Folder")
 
@@ -523,8 +529,10 @@ function Library:create()
 		UIScale.Parent = Mobile
 		UIScale.Scale = 1.340
 	
-		MobileButton.MouseButton1Click:Connect(function()
+		MobileButton.TouchTap:Connect(function()
+			Library.can_be_optimized not Library.open
 			Library.open = not Library.open
+			
 			Library.normalize_size()
 		end)
 	end
@@ -1053,6 +1061,40 @@ function Library:create()
 				ScrollingFrame.ScrollBarThickness = 0
 				ScrollingFrame.TopImage = ""
 				ScrollingFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+
+				local function hide()
+					if ScrollingFrame.Parent == optimized_folder then
+						return
+					end
+
+					ScrollingFrame.Parent = optimized_folder
+					ScrollingFrame.Visible = false
+				end
+
+				local function unhide()
+					if ScrollingFrame.Parent == Dropdown then
+						return
+					end
+
+					ScrollingFrame.Parent = Dropdown
+					ScrollingFrame.Visible = true
+				end
+
+				task.defer(function()
+					while task.wait() do
+						if Library.disconnected then
+							break
+						end
+
+						if not Library.can_be_optimized then
+							unhide()
+
+							return
+						end
+
+						hide()
+					end
+				end)
 
 				UIListLayout.Parent = ScrollingFrame
 				UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
