@@ -223,8 +223,8 @@ UserInputService.InputBegan:Connect(function(input: InputObject, event: boolean)
 		return
 	end
 
-	Library.can_be_optimized = not Library.open
 	Library.open = not Library.open
+	Library.can_be_optimized = not Library.open
 
 	Library.normalize_size()
 
@@ -530,8 +530,8 @@ function Library:create()
 		UIScale.Scale = 1.340
 	
 		MobileButton.TouchTap:Connect(function()
-			Library.can_be_optimized = not Library.open
 			Library.open = not Library.open
+			Library.can_be_optimized = not Library.open
 
 			Library.normalize_size()
 		end)
@@ -1080,19 +1080,19 @@ function Library:create()
 					ScrollingFrame.Visible = true
 				end
 
-				task.defer(function()
+				task.spawn(function()
 					while task.wait() do
 						if Library.disconnected then
-							break
+							return
 						end
 
 						if not Library.can_be_optimized then
-							unhide()
+							task.spawn(unhide)
 
 							return
 						end
 
-						hide()
+						task.spawn(hide)
 					end
 				end)
 
