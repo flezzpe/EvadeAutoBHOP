@@ -322,7 +322,7 @@ function Library:create()
 	Safemode.BorderSizePixel = 0
 	Safemode.Position = UDim2.new(0.391105562, 0, 1.04384315, 0)
 	Safemode.Size = UDim2.new(0, 138, 0, 27)
-	Safemode.Text = "Blatant"
+	Safemode.Text = ""
 	Safemode.TextColor3 = Color3.fromRGB(0, 0, 0)
 	Safemode.TextSize = 1.000
 	Safemode.TextTransparency = 1.000
@@ -766,7 +766,7 @@ function Library:create()
 				Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				Title.BorderSizePixel = 0
 				Title.Position = UDim2.new(0.0400152095, 0, 0.1277771, 0)
-				Title.Size = UDim2.new(0, 74, 0, 14)
+				Title.Size = UDim2.new(0, 120, 0, 14)
 				Title.FontFace = Font.new('rbxasset://fonts/families/GothamSSm.json', Enum.FontWeight.Medium, Enum.FontStyle.Normal)
 				Title.Text = self.title
 				Title.TextColor3 = Color3.fromRGB(255, 255, 255)
