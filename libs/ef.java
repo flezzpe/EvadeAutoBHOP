@@ -475,6 +475,48 @@ function Library:create()
 		Library.normalize_size()
 	end)
 
+	local Mobile = Instance.new("Frame")
+	local MobileButton = Instance.new("TextButton")
+	local UICorner = Instance.new("UICorner")
+	local Icon = Instance.new("ImageLabel")
+	
+	Mobile.Name = "Mobile"
+	Mobile.Parent = game.StarterGui.Nurysium
+	Mobile.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Mobile.BackgroundTransparency = 1.000
+	Mobile.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	Mobile.BorderSizePixel = 0
+	Mobile.Position = UDim2.new(0.5, 0, 0.5, 0)
+	Mobile.Size = UDim2.new(0, 85, 0, 45)
+	
+	MobileButton.Name = "MobileButton"
+	MobileButton.Parent = Mobile
+	MobileButton.BackgroundColor3 = Color3.fromRGB(13, 13, 13)
+	MobileButton.BackgroundTransparency = 0.015
+	MobileButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	MobileButton.BorderSizePixel = 0
+	MobileButton.Position = UDim2.new(-4.05426264, 0, 3.19600701, 0)
+	MobileButton.Size = UDim2.new(0, 43, 0, 28)
+	MobileButton.Text = ""
+	
+	UICorner.CornerRadius = UDim.new(0, 6)
+	UICorner.Parent = MobileButton
+	
+	Icon.Name = "Icon"
+	Icon.Parent = MobileButton
+	Icon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Icon.BackgroundTransparency = 1.000
+	Icon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	Icon.BorderSizePixel = 0
+	Icon.Position = UDim2.new(0.303248554, 0, 0.214285716, 0)
+	Icon.Size = UDim2.new(0, 15, 0, 15)
+	Icon.Image = "rbxassetid://134992015790041"
+
+	MobileButton.MouseButton1Click:Connect(function()
+		Library.open = not Library.open
+		Library.normalize_size()
+	end)
+
 	local TabsController = {}
 
 	function TabsController.create_tab(text: string, image: string)
