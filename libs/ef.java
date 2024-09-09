@@ -999,6 +999,7 @@ function Library:create()
 				ScrollingFrame.MidImage = ""
 				ScrollingFrame.ScrollBarThickness = 0
 				ScrollingFrame.TopImage = ""
+				ScrollingFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
 
 				UIListLayout.Parent = ScrollingFrame
 				UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
