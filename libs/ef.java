@@ -481,7 +481,7 @@ function Library:create()
 	local Icon = Instance.new("ImageLabel")
 	
 	Mobile.Name = "Mobile"
-	Mobile.Parent = game.StarterGui.Nurysium
+	Mobile.Parent = Nurysium
 	Mobile.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 	Mobile.BackgroundTransparency = 1.000
 	Mobile.BorderColor3 = Color3.fromRGB(0, 0, 0)
