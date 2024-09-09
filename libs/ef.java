@@ -475,57 +475,59 @@ function Library:create()
 		Library.normalize_size()
 	end)
 
-	local MobileUI = Instance.new("ScreenGui")
-	local Mobile = Instance.new("Frame")
-	local MobileButton = Instance.new("TextButton")
-	local UICorner = Instance.new("UICorner")
-	local Icon = Instance.new("ImageLabel")
-	local UIScale = Instance.new("UIScale")
+	if Library.mobile then
+		local MobileUI = Instance.new("ScreenGui")
+		local Mobile = Instance.new("Frame")
+		local MobileButton = Instance.new("TextButton")
+		local UICorner = Instance.new("UICorner")
+		local Icon = Instance.new("ImageLabel")
+		local UIScale = Instance.new("UIScale")
+		
+		MobileUI.Name = "MobileUI"
+		MobileUI.Parent = Nurysium
+		MobileUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+		
+		Mobile.Name = "Mobile"
+		Mobile.Parent = MobileUI
+		Mobile.AnchorPoint = Vector2.new(0.5, 0.5)
+		Mobile.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		Mobile.BackgroundTransparency = 1.000
+		Mobile.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Mobile.BorderSizePixel = 0
+		Mobile.Position = UDim2.new(0.0620736592, 0, 0.926020384, 0)
+		Mobile.Size = UDim2.new(0, 85, 0, 45)
+		
+		MobileButton.Name = "MobileButton"
+		MobileButton.Parent = Mobile
+		MobileButton.BackgroundColor3 = Color3.fromRGB(13, 13, 13)
+		MobileButton.BackgroundTransparency = 0.015
+		MobileButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		MobileButton.BorderSizePixel = 0
+		MobileButton.Position = UDim2.new(0.243122876, 0, 0.171316162, 0)
+		MobileButton.Size = UDim2.new(0, 43, 0, 28)
+		MobileButton.Text = ""
+		
+		UICorner.CornerRadius = UDim.new(0, 6)
+		UICorner.Parent = MobileButton
+		
+		Icon.Name = "Icon"
+		Icon.Parent = MobileButton
+		Icon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		Icon.BackgroundTransparency = 1.000
+		Icon.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Icon.BorderSizePixel = 0
+		Icon.Position = UDim2.new(0.303248554, 0, 0.214285716, 0)
+		Icon.Size = UDim2.new(0, 15, 0, 15)
+		Icon.Image = "rbxassetid://134992015790041"
+		
+		UIScale.Parent = Mobile
+		UIScale.Scale = 1.340
 	
-	MobileUI.Name = "MobileUI"
-	MobileUI.Parent = Nurysium
-	MobileUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	
-	Mobile.Name = "Mobile"
-	Mobile.Parent = MobileUI
-	Mobile.AnchorPoint = Vector2.new(0.5, 0.5)
-	Mobile.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	Mobile.BackgroundTransparency = 1.000
-	Mobile.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Mobile.BorderSizePixel = 0
-	Mobile.Position = UDim2.new(0.0620736592, 0, 0.926020384, 0)
-	Mobile.Size = UDim2.new(0, 85, 0, 45)
-	
-	MobileButton.Name = "MobileButton"
-	MobileButton.Parent = Mobile
-	MobileButton.BackgroundColor3 = Color3.fromRGB(13, 13, 13)
-	MobileButton.BackgroundTransparency = 0.015
-	MobileButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	MobileButton.BorderSizePixel = 0
-	MobileButton.Position = UDim2.new(0.243122876, 0, 0.171316162, 0)
-	MobileButton.Size = UDim2.new(0, 43, 0, 28)
-	MobileButton.Text = ""
-	
-	UICorner.CornerRadius = UDim.new(0, 6)
-	UICorner.Parent = MobileButton
-	
-	Icon.Name = "Icon"
-	Icon.Parent = MobileButton
-	Icon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	Icon.BackgroundTransparency = 1.000
-	Icon.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	Icon.BorderSizePixel = 0
-	Icon.Position = UDim2.new(0.303248554, 0, 0.214285716, 0)
-	Icon.Size = UDim2.new(0, 15, 0, 15)
-	Icon.Image = "rbxassetid://134992015790041"
-	
-	UIScale.Parent = Mobile
-	UIScale.Scale = 1.340
-
-	MobileButton.MouseButton1Click:Connect(function()
-		Library.open = not Library.open
-		Library.normalize_size()
-	end)
+		MobileButton.MouseButton1Click:Connect(function()
+			Library.open = not Library.open
+			Library.normalize_size()
+		end)
+	end
 
 	local TabsController = {}
 
