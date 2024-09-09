@@ -1060,6 +1060,33 @@ function Library:create()
 				UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 				UIListLayout.Padding = UDim.new(0, 6)
 
+				local function update_visibility(scrollingFrame, padding)
+					local children = scrollingFrame:GetChildren()
+					local frameSize = scrollingFrame.AbsoluteSize
+					local framePos = scrollingFrame.AbsolutePosition
+					
+					    for _, child in ipairs(children) do
+					        if child:IsA("TextButton") or child:IsA("TextLabel") then
+					            local childPos = child.AbsolutePosition
+					            local childSize = child.AbsoluteSize
+					
+					            if (childPos.Y + childSize.Y > framePos.Y - padding) and (childPos.Y < framePos.Y + frameSize.Y + padding) then
+					                child.Visible = true
+					            else
+					                child.Visible = false
+					            end
+					        end
+					    end
+				end
+
+				ScrollingFrame:GetPropertyChangedSignal("AbsolutePosition"):Connect(function()
+				    update_visibility(ScrollingFrame, 50)
+				end)
+				
+				ScrollingFrame:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+				    update_visibility(ScrollingFrame, 50)
+				end)
+
 				local selected_mod
 				
 				local current_flag = Library.flags[self.flag]
@@ -1105,6 +1132,8 @@ function Library:create()
 
 					UICorner_2.CornerRadius = UDim.new(0, 6)
 					UICorner_2.Parent = Mode
+
+					update_visibility(ScrollingFrame, 50)
 					
 					if current_flag == value then
 						selected_mod = Mode
