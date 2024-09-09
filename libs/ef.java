@@ -223,7 +223,7 @@ UserInputService.InputBegan:Connect(function(input: InputObject, event: boolean)
 		return
 	end
 
-	Library.can_be_optimized not Library.open
+	Library.can_be_optimized = not Library.open
 	Library.open = not Library.open
 
 	Library.normalize_size()
@@ -530,9 +530,9 @@ function Library:create()
 		UIScale.Scale = 1.340
 	
 		MobileButton.TouchTap:Connect(function()
-			Library.can_be_optimized not Library.open
+			Library.can_be_optimized = not Library.open
 			Library.open = not Library.open
-			
+
 			Library.normalize_size()
 		end)
 	end
