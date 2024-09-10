@@ -1080,20 +1080,18 @@ function Library:create()
 					ScrollingFrame.Visible = true
 				end
 
-				task.spawn(function()
-					while task.wait() do
-						if Library.disconnected then
-							return
-						end
-
-						if not Library.can_be_optimized then
-							task.spawn(unhide)
-
-							return
-						end
-
-						task.spawn(hide)
+				Dropdown:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+					if Library.disconnected then
+						return
 					end
+
+					if not Library.can_be_optimized then
+						task.delay(0.8, unhide)
+
+						return
+					end
+
+					task.spawn(hide)
 				end)
 
 				UIListLayout.Parent = ScrollingFrame
