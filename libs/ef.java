@@ -1055,12 +1055,12 @@ function Library:create()
 				ScrollingFrame.BorderSizePixel = 0
 				ScrollingFrame.Size = UDim2.new(1, 0, 1, 0)
 				ScrollingFrame.ZIndex = 5
-				ScrollingFrame.ScrollBarImageColor3 = Color3.fromRGB(0, 0, 0)
+				ScrollingFrame.ScrollBarImageColor3 = Color3.fromRGB(60, 60, 60)
 				ScrollingFrame.BottomImage = ""
-				ScrollingFrame.MidImage = ""
-				ScrollingFrame.ScrollBarThickness = 0
+				ScrollingFrame.ScrollBarThickness = 1
 				ScrollingFrame.TopImage = ""
 				ScrollingFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+
 
 				local function hide()
 					if ScrollingFrame.Parent == optimized_folder then
@@ -1086,7 +1086,7 @@ function Library:create()
 					end
 
 					if not Library.can_be_optimized then
-						task.delay(0.8, unhide)
+						task.delay(1, unhide)
 
 						return
 					end
