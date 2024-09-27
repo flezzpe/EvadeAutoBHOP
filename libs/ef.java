@@ -211,7 +211,7 @@ UserInputService.InputBegan:Connect(function(input: InputObject, event: boolean)
 		return
 	end
 
-	if input.KeyCode ~= Enum.KeyCode.RightShift then
+	if input.KeyCode ~= Enum.KeyCode.Insert then
 		return
 	end
 
