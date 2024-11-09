@@ -77,6 +77,10 @@ end
 local current_config = ConfigsController.load(game.GameId, Library.flags)
 Library.flags = current_config
 
+if not Library.flags then
+	Library.flags = {}
+end
+
 local UIManager = {}
 
 function UIManager.refresh_tabs(Tab: TextButton)
@@ -470,6 +474,7 @@ function Library:create()
 
 	Library.changed(function()
 		table.clear(Library.flags)
+
 		Connections.abadone()
 
 		Library.disconnected = true
