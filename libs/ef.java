@@ -671,7 +671,7 @@ function Library:create()
 
 		local ModuleController = {}
 
-		function ModuleController:create_module()
+		function ModuleController:create_module(callback)
 			local Module = Instance.new("Frame")
 			local UICorner = Instance.new("UICorner")
 			local Tab = Instance.new("TextButton")
@@ -1035,7 +1035,7 @@ function Library:create()
 				end)
 			end
 			
-			function SettingsController:create_dropdown()
+			function SettingsController:create_dropdown(callback)
 				local Dropdown = Instance.new("Frame")
 				local UICorner = Instance.new("UICorner")
 				local ScrollingFrame = Instance.new("ScrollingFrame")
@@ -1192,7 +1192,7 @@ function Library:create()
 						
 						Library.flags[self.flag] = value
 						callback(Library.flags[self.flag])
-						
+
 						ConfigsController.save(game.GameId, Library.flags)
 					end)
 				end
