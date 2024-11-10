@@ -765,6 +765,8 @@ function Library:create()
 					Library.flags[self.flag] = not Library.flags[self.flag]
 				end
 
+				callback(Library.flags[self.flag])
+
 				if Library.flags[self.flag] then
 					TweenService:Create(Tab, TweenInfo.new(1.2, Enum.EasingStyle.Exponential), {
 						BackgroundColor3 = Color3.fromRGB(51, 51, 51)
@@ -1170,6 +1172,8 @@ function Library:create()
 						}):Play()
 						
 						Library.flags[self.flag] = value
+						callback(Library.flags[self.flag])
+
 						ConfigsController.save(game.GameId, Library.flags)
 					end)
 
@@ -1187,6 +1191,8 @@ function Library:create()
 						}):Play()
 						
 						Library.flags[self.flag] = value
+						callback(Library.flags[self.flag])
+						
 						ConfigsController.save(game.GameId, Library.flags)
 					end)
 				end
